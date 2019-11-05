@@ -3280,7 +3280,7 @@
 						"$ref": "AAAAAAFuOt34D+bQRmk="
 					},
 					"name": "Handling Map Data",
-					"documentation": "1. 개략 명세 : 이 USE CASE는 Operator가 초기화하며, Operator가  시스템에 MAP Data를 삽입하기 위한 기능을 제공한다.\n\n2. 사건의 흐름 :\n- Operator가 고유번호를 입력하면서 시작한다.\n시스템은 Operator의 고유번호가 유효한지 검사 후 \n"
+					"documentation": "1. 개략 명세 : 이 USE CASE는 Operator가 초기화하며, Operator가  시스템에 MAP Data를 삽입, 수정, 삭제하기 위한 기능을 제공한다.\n\n2. 사건의 흐름 :\n-Operator가 고유번호를 입력하면서 시작한다.\n시스템은 Operator의 고유번호가 유효한지 검사 후 맞으면 Operator에게 Map Data를 입력하라고 표시한다. Operator는 Map data를 입력 한다. 시스템은 Operater가 다음 사항 중 하나를 선택하도록 한다.\n-- Map Data 삽입\n-- Map Data 수정\n-- Map Data 삭제\nOperater가 끝났음을 지시한다. 시스템은 입력한 Map data를 화면에 표시하고 입력이 되었음을 알린다.\n\n2.1 Alternate flow\n-만일 고유번호가 틀릴 경우 시스템은 등록 시스템 접근을 허용하지 않는다. 삽입되지 않은 Map Data를 수정이나 삭제하려 하거나, 이미 만들어진 Map Data를 또 만들려고 시도할 경우 시스템은 다른 선택을 지시한다.\n  \n\n2.2 Map Data 삽입\n- Operator는 일정한 형식에 따라 Map Data를 입력한다. Operater가 삽입을 요청하면 시스템은\n--삽입한 데이터의 형식을 확인한다.\n-- 입력받은 Map Data를 저장한다.\n--Alternate flow\n----삽입을 위해넣은 Map Data의 형식이 다른 경우 시스템은 오류를 표시하고 재입력을 지시한다.\n\n2.3 Map Data 수정\n-시스템이 삽입된 Map Data를 표시한다. Operator는 삽입한 Map Data에서 수정할 부분을 찾아 입력한다.  학생이 수정을 요청하면 시스템은\n--수정한 데이터의 형식을 확인한다.\n--수정한 Map Data를 저장한다\n--Alternate flow\n----수정을 위해 넣은 Map Data의 형식이 다른 경우 시스템은 오류를 표시하고 재입력을 지시한다.\n\n2.4 Map Data 삭제\n- Operator가 삽입한 Map Data를 지울 것을 지시한다.  시스템은 저장된 Map Data를 지우고 Operator에게 요청이 처리되었음을 알린다."
 				},
 				{
 					"_type": "UMLUseCase",
@@ -3327,7 +3327,7 @@
 						"$ref": "AAAAAAFuOt34D+bQRmk="
 					},
 					"name": "Insert Hazard Point",
-					"documentation": "선조건 : \"Insert Moving Data\" Use Cas는 이 Use Case전에 실행되어야 한다. "
+					"documentation": "1. 개략 명세 : 이 USE CASE는 SIM이 초기화하며, SIM이  시스템에게 HazardSensor에 의해 탐색된 값을 제공하기 위한 기능을 제공한다.\n\n2. 사건의 흐름 :\n- SIM이 HazardSensor에 의해 탐색된 값을 시스템에게 제공한다. SIM은\n--탐색된 값이 True이면 Map에 Hazard Point를 표시 후 저장하고 경로를 재설정한다.\n\n2.2선조건 : \"Insert Moving Data\" Use Cas는 이 Use Case전에 실행되어야 한다. "
 				},
 				{
 					"_type": "UMLUseCase",
@@ -3336,7 +3336,7 @@
 						"$ref": "AAAAAAFuOt34D+bQRmk="
 					},
 					"name": "Insert Color Blob Point",
-					"documentation": "선조건 : \"Insert Moving Data\" Use Cas는 이 Use Case전에 실행되어야 한다. "
+					"documentation": "1. 개략 명세 : 이 USE CASE는 SIM이 초기화하며, SIM이  시스템에게 ColorBlobSensor에 의해 탐색된 값을 제공하기 위한 기능을 제공한다.\n\n2. 사건의 흐름 :\n- SIM이 ColorBlobSensor에 의해 탐색된 값을 시스템에게 제공한다. SIM은\n--탐색된 값이 True이면 Map에 Color Blob Point를 표시 후 저장하고 경로를 재설정한다.\n\n2.2선조건 : \"Insert Moving Data\" Use Cas는 이 Use Case전에 실행되어야 한다. "
 				},
 				{
 					"_type": "UMLUseCase",
@@ -3447,7 +3447,8 @@
 					"_parent": {
 						"$ref": "AAAAAAFuOt34D+bQRmk="
 					},
-					"name": "Set System to Move Robot"
+					"name": "Set System to Move Robot",
+					"documentation": "1. 개략 명세 : 이 USE CASE는 Operator가 초기화하며, Operator가  시스템에게 저장된 Map Data로 SIM과의 통신을 통해 로봇을 움직이게 하기 위한 기능을 제공한다.\n\n2. 사건의 흐름 :\n-Operator가 고유번호를 입력하면서 시작한다.\n시스템은 Operator의 고유번호가 유효한지 검사 후 맞으면 Operator에게 유효하다고 알린다. Operator는 시스템 작동을 지시한다.\n2.1 Alternate flow\n-만일 고유번호가 틀릴 경우 시스템은 작동 시스템 접근을 허용하지 않는다.\n\n2.2 선조건\n-\"Handling Map Data\" Use Case는 이 Use Case 실행 전에 실행되어야 한다."
 				}
 			]
 		},
@@ -3519,7 +3520,7 @@
 						"$ref": "AAAAAAFuO62sn1vW6D0="
 					},
 					"name": "MapDataManager",
-					"stereotype": "entity"
+					"stereotype": "control"
 				},
 				{
 					"_type": "UMLClass",
@@ -3528,7 +3529,7 @@
 						"$ref": "AAAAAAFuO62sn1vW6D0="
 					},
 					"name": "MoveRobotManager",
-					"stereotype": "entity"
+					"stereotype": "control"
 				},
 				{
 					"_type": "UMLClass",
