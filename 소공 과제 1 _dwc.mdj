@@ -697,7 +697,7 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": -112,
+											"left": -128,
 											"top": 192,
 											"height": 13
 										},
@@ -708,7 +708,7 @@
 												"$ref": "AAAAAAFuO2ivVpaYgy4="
 											},
 											"font": "Arial;13;1",
-											"left": 286,
+											"left": 278,
 											"top": 531.5,
 											"width": 149,
 											"height": 13,
@@ -722,7 +722,7 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": -112,
+											"left": -128,
 											"top": 192,
 											"width": 130.51416015625,
 											"height": 13,
@@ -736,14 +736,14 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": -112,
+											"left": -128,
 											"top": 192,
 											"height": 13,
 											"horizontalAlignment": 1
 										}
 									],
 									"font": "Arial;13;0",
-									"left": 281,
+									"left": 273,
 									"top": 524.5,
 									"width": 159.5126953125,
 									"height": 25,
@@ -771,7 +771,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": -56,
+									"left": -64,
 									"top": 96,
 									"width": 10,
 									"height": 10
@@ -787,7 +787,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": -56,
+									"left": -64,
 									"top": 96,
 									"width": 10,
 									"height": 10
@@ -803,7 +803,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": -56,
+									"left": -64,
 									"top": 96,
 									"width": 10,
 									"height": 10
@@ -819,7 +819,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": -56,
+									"left": -64,
 									"top": 96,
 									"width": 10,
 									"height": 10
@@ -835,7 +835,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": -56,
+									"left": -64,
 									"top": 96,
 									"width": 10,
 									"height": 10
@@ -843,7 +843,7 @@
 							],
 							"font": "Arial;13;0",
 							"containerChangeable": true,
-							"left": 248,
+							"left": 240,
 							"top": 520,
 							"width": 225,
 							"height": 35,
@@ -897,7 +897,7 @@
 											"visible": false,
 											"font": "Arial;13;0",
 											"left": -240,
-											"top": -688,
+											"top": -704,
 											"height": 13
 										},
 										{
@@ -908,7 +908,7 @@
 											},
 											"font": "Arial;13;1",
 											"left": 272.5,
-											"top": 211.5,
+											"top": 203.5,
 											"width": 121,
 											"height": 13,
 											"text": "Insert Hazard Point"
@@ -922,7 +922,7 @@
 											"visible": false,
 											"font": "Arial;13;0",
 											"left": -240,
-											"top": -688,
+											"top": -704,
 											"width": 130.51416015625,
 											"height": 13,
 											"text": "(from Use Case  View)"
@@ -936,14 +936,14 @@
 											"visible": false,
 											"font": "Arial;13;0",
 											"left": -240,
-											"top": -688,
+											"top": -704,
 											"height": 13,
 											"horizontalAlignment": 1
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 267.5,
-									"top": 204.5,
+									"top": 196.5,
 									"width": 131,
 									"height": 25,
 									"stereotypeLabel": {
@@ -971,7 +971,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": -120,
-									"top": -344,
+									"top": -352,
 									"width": 10,
 									"height": 10
 								},
@@ -987,7 +987,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": -120,
-									"top": -344,
+									"top": -352,
 									"width": 10,
 									"height": 10
 								},
@@ -1003,7 +1003,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": -120,
-									"top": -344,
+									"top": -352,
 									"width": 10,
 									"height": 10
 								},
@@ -1019,7 +1019,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": -120,
-									"top": -344,
+									"top": -352,
 									"width": 10,
 									"height": 10
 								},
@@ -1035,7 +1035,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": -120,
-									"top": -344,
+									"top": -352,
 									"width": 10,
 									"height": 10
 								}
@@ -1043,7 +1043,7 @@
 							"font": "Arial;13;0",
 							"containerChangeable": true,
 							"left": 240,
-							"top": 200,
+							"top": 192,
 							"width": 186,
 							"height": 35,
 							"nameCompartment": {
@@ -1666,8 +1666,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 206,
-									"top": 303,
+									"left": 207,
+									"top": 299,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -1687,8 +1687,8 @@
 									},
 									"visible": null,
 									"font": "Arial;13;0",
-									"left": 196,
-									"top": 292,
+									"left": 197,
+									"top": 288,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -1708,8 +1708,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 227,
-									"top": 326,
+									"left": 228,
+									"top": 320,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -1729,8 +1729,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 132,
-									"top": 372,
+									"left": 131,
+									"top": 371,
 									"height": 13,
 									"alpha": 0.5235987755982988,
 									"distance": 30,
@@ -1751,7 +1751,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 124,
-									"top": 361,
+									"top": 360,
 									"height": 13,
 									"alpha": 0.7853981633974483,
 									"distance": 40,
@@ -1772,7 +1772,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 147,
-									"top": 395,
+									"top": 394,
 									"height": 13,
 									"alpha": -0.5235987755982988,
 									"distance": 25,
@@ -1792,8 +1792,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 282,
-									"top": 235,
+									"left": 283,
+									"top": 227,
 									"height": 13,
 									"alpha": -0.5235987755982988,
 									"distance": 30,
@@ -1812,8 +1812,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 272,
-									"top": 227,
+									"left": 273,
+									"top": 219,
 									"height": 13,
 									"alpha": -0.7853981633974483,
 									"distance": 40,
@@ -1832,8 +1832,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 304,
-									"top": 252,
+									"left": 305,
+									"top": 244,
 									"height": 13,
 									"alpha": 0.5235987755982988,
 									"distance": 25,
@@ -1882,7 +1882,7 @@
 								"$ref": "AAAAAAFuO7aA12OZnOw="
 							},
 							"lineStyle": 1,
-							"points": "123:407;312:235",
+							"points": "123:406;313:227",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAFuO7afk2QXnrk="
@@ -2485,7 +2485,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 213,
+									"left": 210,
 									"top": 487,
 									"height": 13,
 									"alpha": 1.5707963267948966,
@@ -2506,7 +2506,7 @@
 									},
 									"visible": null,
 									"font": "Arial;13;0",
-									"left": 207,
+									"left": 204,
 									"top": 501,
 									"height": 13,
 									"alpha": 1.5707963267948966,
@@ -2527,7 +2527,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 224,
+									"left": 221,
 									"top": 460,
 									"height": 13,
 									"alpha": -1.5707963267948966,
@@ -2548,8 +2548,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 285,
-									"top": 517,
+									"left": 279,
+									"top": 516,
 									"height": 13,
 									"alpha": 0.5235987755982988,
 									"distance": 30,
@@ -2569,7 +2569,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 278,
+									"left": 272,
 									"top": 528,
 									"height": 13,
 									"alpha": 0.7853981633974483,
@@ -2590,7 +2590,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 299,
+									"left": 293,
 									"top": 493,
 									"height": 13,
 									"alpha": -0.5235987755982988,
@@ -2701,7 +2701,7 @@
 								"$ref": "AAAAAAFuO2ivVpaXs1g="
 							},
 							"lineStyle": 1,
-							"points": "315:519;123:442",
+							"points": "309:519;123:442",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAFuO7cdi2q5sCg="
@@ -2766,7 +2766,7 @@
 											"visible": false,
 											"font": "Arial;13;0",
 											"left": -128,
-											"top": -32,
+											"top": -48,
 											"height": 13
 										},
 										{
@@ -2777,7 +2777,7 @@
 											},
 											"font": "Arial;13;1",
 											"left": 289.5,
-											"top": 147.5,
+											"top": 139.5,
 											"width": 163,
 											"height": 13,
 											"text": "Set System to Move Robot"
@@ -2791,7 +2791,7 @@
 											"visible": false,
 											"font": "Arial;13;0",
 											"left": -128,
-											"top": -32,
+											"top": -48,
 											"width": 130.51416015625,
 											"height": 13,
 											"text": "(from Use Case  View)"
@@ -2805,14 +2805,14 @@
 											"visible": false,
 											"font": "Arial;13;0",
 											"left": -128,
-											"top": -32,
+											"top": -48,
 											"height": 13,
 											"horizontalAlignment": 1
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 284.5,
-									"top": 140.5,
+									"top": 132.5,
 									"width": 173.96630859375,
 									"height": 25,
 									"stereotypeLabel": {
@@ -2840,7 +2840,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": -8,
-									"top": 24,
+									"top": 16,
 									"width": 10,
 									"height": 10
 								},
@@ -2856,7 +2856,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": -8,
-									"top": 24,
+									"top": 16,
 									"width": 10,
 									"height": 10
 								},
@@ -2872,7 +2872,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": -8,
-									"top": 24,
+									"top": 16,
 									"width": 10,
 									"height": 10
 								},
@@ -2888,7 +2888,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": -8,
-									"top": 24,
+									"top": 16,
 									"width": 10,
 									"height": 10
 								},
@@ -2904,7 +2904,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": -8,
-									"top": 24,
+									"top": 16,
 									"width": 10,
 									"height": 10
 								}
@@ -2912,7 +2912,7 @@
 							"font": "Arial;13;0",
 							"containerChangeable": true,
 							"left": 248,
-							"top": 136,
+							"top": 128,
 							"width": 246,
 							"height": 35,
 							"nameCompartment": {
@@ -2958,7 +2958,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 193,
-									"top": 109,
+									"top": 106,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -2979,7 +2979,7 @@
 									"visible": null,
 									"font": "Arial;13;0",
 									"left": 195,
-									"top": 94,
+									"top": 91,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -3000,7 +3000,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 190,
-									"top": 138,
+									"top": 135,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -3021,7 +3021,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 164,
-									"top": 105,
+									"top": 103,
 									"height": 13,
 									"alpha": 0.5235987755982988,
 									"distance": 30,
@@ -3041,8 +3041,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 168,
-									"top": 92,
+									"left": 167,
+									"top": 90,
 									"height": 13,
 									"alpha": 0.7853981633974483,
 									"distance": 40,
@@ -3062,8 +3062,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 156,
-									"top": 132,
+									"left": 157,
+									"top": 130,
 									"height": 13,
 									"alpha": -0.5235987755982988,
 									"distance": 25,
@@ -3083,8 +3083,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 223,
-									"top": 112,
+									"left": 222,
+									"top": 109,
 									"height": 13,
 									"alpha": -0.5235987755982988,
 									"distance": 30,
@@ -3103,8 +3103,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 222,
-									"top": 99,
+									"left": 221,
+									"top": 96,
 									"height": 13,
 									"alpha": -0.7853981633974483,
 									"distance": 40,
@@ -3123,8 +3123,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 223,
-									"top": 140,
+									"left": 224,
+									"top": 137,
 									"height": 13,
 									"alpha": 0.5235987755982988,
 									"distance": 25,
@@ -3169,7 +3169,7 @@
 								"$ref": "AAAAAAFuO1aCMZOWrFg="
 							},
 							"lineStyle": 1,
-							"points": "137:123;247:137",
+							"points": "137:122;247:133",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAFuO70R/Yf4SME="
@@ -3318,7 +3318,8 @@
 								}
 							}
 						}
-					]
+					],
+					"documentation": "1. 개략 명세 : 이 USE CASE는 시스템이 초기화하며, 시스템이  SIM에게 Map Data에 의해 계산된 경로로의 움직임을 제공하기 위한 기능을 제공한다.\n\n2. 사건의 흐름 :\n- 시스템은 Map Data에 의해 경로를 계산한 후 경로를 따라가기 위한 움직임 명령을 SIM에게 제공한다. SIM은\n--명령에 따라 앞으로 1 전진하거나 시계 방향 90도만큼 회전한다.\n\n2.1선조건 : \"Set System to Move Robot\" Use Cas는 이 Use Case전에 실행되어야 한다. "
 				},
 				{
 					"_type": "UMLUseCase",
@@ -3327,7 +3328,7 @@
 						"$ref": "AAAAAAFuOt34D+bQRmk="
 					},
 					"name": "Insert Hazard Point",
-					"documentation": "1. 개략 명세 : 이 USE CASE는 SIM이 초기화하며, SIM이  시스템에게 HazardSensor에 의해 탐색된 값을 제공하기 위한 기능을 제공한다.\n\n2. 사건의 흐름 :\n- SIM이 HazardSensor에 의해 탐색된 값을 시스템에게 제공한다. SIM은\n--탐색된 값이 True이면 Map에 Hazard Point를 표시 후 저장하고 경로를 재설정한다.\n\n2.2선조건 : \"Insert Moving Data\" Use Cas는 이 Use Case전에 실행되어야 한다. "
+					"documentation": "1. 개략 명세 : 이 USE CASE는 SIM이 초기화하며, SIM이  시스템에게 HazardSensor에 의해 탐색된 값을 제공하기 위한 기능을 제공한다.\n\n2. 사건의 흐름 :\n- SIM이 HazardSensor에 의해 탐색된 값을 시스템에게 제공한다. SIM은\n--탐색된 값이 True이면 Map에 Hazard Point를 표시 후 저장하고 경로를 재설정한다.\n\n2.1선조건 : \"Insert Moving Data\" Use Cas는 이 Use Case전에 실행되어야 한다. "
 				},
 				{
 					"_type": "UMLUseCase",
@@ -3336,7 +3337,7 @@
 						"$ref": "AAAAAAFuOt34D+bQRmk="
 					},
 					"name": "Insert Color Blob Point",
-					"documentation": "1. 개략 명세 : 이 USE CASE는 SIM이 초기화하며, SIM이  시스템에게 ColorBlobSensor에 의해 탐색된 값을 제공하기 위한 기능을 제공한다.\n\n2. 사건의 흐름 :\n- SIM이 ColorBlobSensor에 의해 탐색된 값을 시스템에게 제공한다. SIM은\n--탐색된 값이 True이면 Map에 Color Blob Point를 표시 후 저장하고 경로를 재설정한다.\n\n2.2선조건 : \"Insert Moving Data\" Use Cas는 이 Use Case전에 실행되어야 한다. "
+					"documentation": "1. 개략 명세 : 이 USE CASE는 SIM이 초기화하며, SIM이  시스템에게 ColorBlobSensor에 의해 탐색된 값을 제공하기 위한 기능을 제공한다.\n\n2. 사건의 흐름 :\n- SIM이 ColorBlobSensor에 의해 탐색된 값을 시스템에게 제공한다. SIM은\n--탐색된 값이 True이면 Map에 Color Blob Point를 표시 후 저장하고 경로를 재설정한다.\n\n2.1선조건 : \"Insert Moving Data\" Use Cas는 이 Use Case전에 실행되어야 한다. "
 				},
 				{
 					"_type": "UMLUseCase",
@@ -3345,7 +3346,7 @@
 						"$ref": "AAAAAAFuOt34D+bQRmk="
 					},
 					"name": "Insert Current Position",
-					"documentation": "1. 개략 명세 : 이 USE CASE는 SIM이 초기화하며, SIM이  시스템에게 PositioningSensor에 의해 탐색된 값을 제공하기 위한 기능을 제공한다.\n\n2. 사건의 흐름 :\n- SIM이 PositioningSensor에 의해 탐색된 값을 시스템에게 제공한다. SIM은\n--탐색된 값이 True이면 Map에 Color Blob Point를 표시 후 저장하고 경로를 재설정한다.\n\n2.2선조건 : \"Insert Moving Data\" Use Cas는 이 Use Case전에 실행되어야 한다. "
+					"documentation": "1. 개략 명세 : 이 USE CASE는 SIM이 초기화하며, SIM이  시스템에게 PositioningSensor에 의해 실제 현재 위치를 제공하기 위한 기능을 제공한다.\n\n2. 사건의 흐름 :\n- SIM이 PositioningSensor에 의해 실제 현재 위치를 시스템에게 제공한다. SIM은\n--예상 현재 위치와 비교하여 같지 않으면 Compensating for imperfect Motion 기능을 수행한다.\n\n2.1선조건 : \"Insert Moving Data\" Use Cas는 이 Use Case전에 실행되어야 한다. "
 				},
 				{
 					"_type": "UMLActor",
