@@ -885,7 +885,7 @@
 									"font": "Arial;13;0",
 									"left": 363,
 									"top": 220.5,
-									"width": 168.2216796875,
+									"width": 167,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAFuO2rsyp4+Z2U="
@@ -1282,7 +1282,7 @@
 									"font": "Arial;13;0",
 									"left": 360,
 									"top": 276.5,
-									"width": 191.30810546875,
+									"width": 190,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAFuO2wF+6A0nEg="
@@ -1643,7 +1643,7 @@
 									"font": "Arial;13;0",
 									"left": 360.5,
 									"top": 340.5,
-									"width": 195.6435546875,
+									"width": 195,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAFuO23EFqUntl8="
@@ -6267,9 +6267,9 @@
 														"$ref": "AAAAAAFuQ97Js+bhxWg="
 													},
 													"font": "Arial;13;0",
-													"left": 102.97900390625,
+													"left": 98.58642578125,
 													"top": 13,
-													"width": 144.80615234375,
+													"width": 132.041015625,
 													"height": 13,
 													"text": "Input Map Data Scenario"
 												},
@@ -6282,7 +6282,7 @@
 													"font": "Arial;13;1",
 													"left": 37,
 													"top": 13,
-													"width": 60.97900390625,
+													"width": 56.58642578125,
 													"height": 13,
 													"text": "interaction"
 												}
@@ -7326,9 +7326,9 @@
 														"$ref": "AAAAAAFuRKX9hnT7RsM="
 													},
 													"font": "Arial;13;0",
-													"left": 147.578125,
+													"left": 146.11181640625,
 													"top": 445,
-													"width": 56.65625,
+													"width": 52.28271484375,
 													"height": 13,
 													"text": "InputSpot"
 												},
@@ -7341,7 +7341,7 @@
 													"font": "Arial;13;1",
 													"left": 117,
 													"top": 445,
-													"width": 25.578125,
+													"width": 24.11181640625,
 													"height": 13,
 													"text": "loop"
 												},
@@ -7649,9 +7649,9 @@
 														"$ref": "AAAAAAFuRKfOsXV0wEA="
 													},
 													"font": "Arial;13;0",
-													"left": 147.578125,
+													"left": 146.11181640625,
 													"top": 669,
-													"width": 71.82080078125,
+													"width": 65.96826171875,
 													"height": 13,
 													"text": "InputHazard"
 												},
@@ -7664,7 +7664,7 @@
 													"font": "Arial;13;1",
 													"left": 117,
 													"top": 669,
-													"width": 25.578125,
+													"width": 24.11181640625,
 													"height": 13,
 													"text": "loop"
 												},
@@ -8449,8 +8449,8 @@
 											"font": "Arial;13;0",
 											"left": 5,
 											"top": 5,
-											"width": 1140,
-											"height": 596,
+											"width": 924,
+											"height": 588,
 											"nameLabel": {
 												"$ref": "AAAAAAFuQ8DIUdyosyU="
 											},
@@ -10483,9 +10483,9 @@
 														"$ref": "AAAAAAFuRKpe+XWujbQ="
 													},
 													"font": "Arial;13;0",
-													"left": 75.97900390625,
+													"left": 71.58642578125,
 													"top": 10,
-													"width": 208.390625,
+													"width": 183.6474609375,
 													"height": 13,
 													"text": "Read Hazard Sensor Data Scenario"
 												},
@@ -10498,7 +10498,7 @@
 													"font": "Arial;13;1",
 													"left": 10,
 													"top": 10,
-													"width": 60.97900390625,
+													"width": 56.58642578125,
 													"height": 13,
 													"text": "interaction"
 												}
@@ -12779,9 +12779,9 @@
 														"$ref": "AAAAAAFuRLI+KHprWRs="
 													},
 													"font": "Arial;13;0",
-													"left": 75.97900390625,
+													"left": 71.58642578125,
 													"top": 10,
-													"width": 227.1796875,
+													"width": 204.2646484375,
 													"height": 13,
 													"text": "Read Color Blob Sensor Data Scenario"
 												},
@@ -12794,7 +12794,7 @@
 													"font": "Arial;13;1",
 													"left": 10,
 													"top": 10,
-													"width": 60.97900390625,
+													"width": 56.58642578125,
 													"height": 13,
 													"text": "interaction"
 												}
@@ -15811,9 +15811,9 @@
 														"$ref": "AAAAAAFuRLOYonsmLKA="
 													},
 													"font": "Arial;13;0",
-													"left": 75.97900390625,
+													"left": 71.58642578125,
 													"top": 10,
-													"width": 230.08056640625,
+													"width": 205.3564453125,
 													"height": 13,
 													"text": "Read Positioning Sensor Data Scenario"
 												},
@@ -15826,7 +15826,7 @@
 													"font": "Arial;13;1",
 													"left": 10,
 													"top": 10,
-													"width": 60.97900390625,
+													"width": 56.58642578125,
 													"height": 13,
 													"text": "interaction"
 												}
@@ -16542,9 +16542,9 @@
 														"$ref": "AAAAAAFuRMimyyAz+i0="
 													},
 													"font": "Arial;13;0",
-													"left": 75.97900390625,
+													"left": 71.58642578125,
 													"top": 10,
-													"width": 162.88427734375,
+													"width": 146.1455078125,
 													"height": 13,
 													"text": "RunRobotSearchingSenario"
 												},
@@ -16557,7 +16557,7 @@
 													"font": "Arial;13;1",
 													"left": 10,
 													"top": 10,
-													"width": 60.97900390625,
+													"width": 56.58642578125,
 													"height": 13,
 													"text": "interaction"
 												}
@@ -17537,8 +17537,8 @@
 														"$ref": "AAAAAAFuRg2BAH8Myj8="
 													},
 													"font": "Arial;13;0",
-													"left": 70.97900390625,
-													"top": 5,
+													"left": 78.97900390625,
+													"top": 13,
 													"width": 240.19873046875,
 													"height": 13,
 													"text": "Run Robot Searching Sequence Diagram"
@@ -17550,16 +17550,18 @@
 														"$ref": "AAAAAAFuRg2BAH8Myj8="
 													},
 													"font": "Arial;13;1",
-													"left": 5,
-													"top": 5,
+													"left": 13,
+													"top": 13,
 													"width": 60.97900390625,
 													"height": 13,
 													"text": "interaction"
 												}
 											],
 											"font": "Arial;13;0",
-											"width": 2393,
-											"height": 1089,
+											"left": 8,
+											"top": 8,
+											"width": 2345,
+											"height": 1025,
 											"nameLabel": {
 												"$ref": "AAAAAAFuRg2BAH8NCQc="
 											},
@@ -26184,7 +26186,7 @@
 													"top": 392,
 													"width": 140.8798828125,
 													"height": 13,
-													"text": "+AddHazardValue()",
+													"text": "+AddSensorValue()",
 													"horizontalAlignment": 0
 												},
 												{
@@ -26408,7 +26410,7 @@
 													"top": 402,
 													"width": 160.3544921875,
 													"height": 13,
-													"text": "+AddColorBlobValue()",
+													"text": "+AddSensorValue()",
 													"horizontalAlignment": 0
 												},
 												{
@@ -26653,7 +26655,7 @@
 													"top": 393,
 													"width": 151.68359375,
 													"height": 13,
-													"text": "+InputPositionValue()",
+													"text": "+AddSensorValue()",
 													"horizontalAlignment": 0
 												}
 											],
