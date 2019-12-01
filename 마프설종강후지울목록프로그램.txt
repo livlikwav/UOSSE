@@ -1,5 +1,0 @@
-마프설종강후지울목록
-01_avr-toolchain_330710.exe
-02_AvrStudio4Setup.exe
-+avr jungo usb
-03_CP210xVCPInstaller_x64.exe
