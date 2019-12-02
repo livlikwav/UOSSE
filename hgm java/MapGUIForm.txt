@@ -66,6 +66,18 @@ public class MapGUIForm extends JFrame{
 		case "NEWCOLORBLOB":
 			mapdata.setMapPoint(PointType.NEWCOLORBLOB, row, col);
 			break;
+		case "ROBOTONGOAL":
+			mapdata.setMapPoint(PointType.ROBOTONGOAL, row, col);
+			break;
+		case "ROBOTONCLRB":
+			mapdata.setMapPoint(PointType.ROBOTONCLRB, row, col);
+			break;
+		case "FINISHEDGOAL":
+			mapdata.setMapPoint(PointType.FINISHEDGOAL, row, col);
+			break;
+		case "ROBOTONFNGOAL":
+			mapdata.setMapPoint(PointType.ROBOTONFNGOAL, row, col);
+			break;
 		default:
 			System.out.println("error in MapGUIForm.setMapPoint");
 			break;
@@ -83,7 +95,7 @@ enum MoveDirection{
 }
 //맵 포인트의 유형
 enum PointType{
-	EMPTY, ROBOT, GOAL, SEENHAZARD, SEENCOLORBLOB, NEWHAZARD, NEWCOLORBLOB, ROBOTONGOAL, ROBOTONCLRB
+	EMPTY, ROBOT, GOAL, SEENHAZARD, SEENCOLORBLOB, NEWHAZARD, NEWCOLORBLOB, ROBOTONGOAL, ROBOTONCLRB, FINISHEDGOAL, ROBOTONFNGOAL
 }
 
 class MapPanel extends JPanel{
@@ -106,6 +118,7 @@ class MapPanel extends JPanel{
 	private Image imgnewhazard;
 	private Image imgnewcolorblob;
 	private Image imgrobotongoal;
+	private Image imgfinishedgoal;
 	//더블버퍼링 위함
 	private Image buffimg; 
 	private Graphics buffimg_g;
@@ -146,6 +159,8 @@ class MapPanel extends JPanel{
 		imgnewcolorblob = imgnewcolorblob.getScaledInstance(cellimgwidth, cellimgheight, Image.SCALE_SMOOTH);
 		imgrobotongoal = Toolkit.getDefaultToolkit().getImage(".\\ROBOTONGOAL.png");
 		imgrobotongoal = imgrobotongoal.getScaledInstance(cellimgwidth, cellimgheight, Image.SCALE_SMOOTH);
+		imgfinishedgoal = Toolkit.getDefaultToolkit().getImage(".\\FINISHEDGOAL.png");
+		imgfinishedgoal = imgfinishedgoal.getScaledInstance(cellimgwidth, cellimgheight, Image.SCALE_SMOOTH);
 	}
 	
 	@Override
@@ -222,6 +237,29 @@ class MapPanel extends JPanel{
 			break;
 		case ROBOTONCLRB: //로봇이 SEENCOLORBLOB 위에 있게 두개다 그려준다
 			buffimg_g.drawImage(imgseencolorblob, xpos, ypos, this);
+			switch(mapdata.currentDirection) {
+			case UP:
+				buffimg_g.drawImage(imgrobotup, xpos, ypos, this);
+				break;
+			case DOWN:
+				buffimg_g.drawImage(imgrobotdown, xpos, ypos, this);
+				break;
+			case LEFT:
+				buffimg_g.drawImage(imgrobotleft, xpos, ypos, this);
+				break;
+			case RIGHT:
+				buffimg_g.drawImage(imgrobotright, xpos, ypos, this);
+				break;
+			default:
+				System.out.println("error in current robot state");
+				break;
+			}
+			break;
+		case FINISHEDGOAL:
+			buffimg_g.drawImage(imgfinishedgoal, xpos, ypos, this);
+			break;
+		case ROBOTONFNGOAL: //로봇이 FNGOAL 위에 있게 두개다 그려준다
+			buffimg_g.drawImage(imgfinishedgoal, xpos, ypos, this);
 			switch(mapdata.currentDirection) {
 			case UP:
 				buffimg_g.drawImage(imgrobotup, xpos, ypos, this);
@@ -343,8 +381,20 @@ class MapData{
 		case NEWCOLORBLOB:
 			mapMatrix[row][col] = PointType.NEWCOLORBLOB;
 			break;
+		case ROBOTONGOAL:
+			mapMatrix[row][col] = PointType.ROBOTONGOAL;
+			break;
+		case ROBOTONCLRB:
+			mapMatrix[row][col] = PointType.ROBOTONCLRB;
+			break;
+		case FINISHEDGOAL:
+			mapMatrix[row][col] = PointType.FINISHEDGOAL;
+			break;
+		case ROBOTONFNGOAL:
+			mapMatrix[row][col] = PointType.ROBOTONFNGOAL;
+			break;
 		default:
-			System.out.println("error in setMapPoint");
+			System.out.println("error in mapdata.setMapPoint");
 			break;
 		}
 	}
@@ -398,90 +448,47 @@ class MapData{
     		
     	}
     	else {
-    		System.out.println("error at doOperation");
+    		System.out.println("operation string not match at mapdata.doOperation");
     	}
     }
     
     public void goStep(int row, int col, int next_row, int next_col) {
-    	//ROBOT > EMPTY
-    	//ROBOT > GOAL
-    	//ROBOT > CLRB
-    	//ROBOTONGOAL > EMPTY
-    	//ROBOTONGOAL > GOAL
-    	//ROBOTONGOAL > CLRB
-    	//ROBOTONCLRB > EMPTY
-    	//ROBOTONCLRB > GOAL
-    	//ROBOTONCLRB > CLRB
-    	//로봇이 밟을수 있는 경우의 수는 총 9가지
-    	//CLRB는 싹다 SEENCLRB일것.
+    	//먼저 mapdata의 현재 로봇 위치값 변경해준다.
+		currentPosition[0] = next_row;
+		currentPosition[1] = next_col;
+		//mapdata.mapMatrix 행렬값 수정해준다
     	switch(mapMatrix[row][col]) {
     	case ROBOT:
     		mapMatrix[row][col] = PointType.EMPTY;
-    		switch(mapMatrix[next_row][next_col]) {
-    		case EMPTY:
-    			mapMatrix[next_row][next_col] = PointType.ROBOT;
-    			currentPosition[0] = next_row;
-    			currentPosition[1] = next_col;
-    			break;
-    		case GOAL:
-    			mapMatrix[next_row][next_col] = PointType.ROBOTONGOAL;
-    			currentPosition[0] = next_row;
-    			currentPosition[1] = next_col;
-    			break;
-    		case SEENCOLORBLOB:
-    			mapMatrix[next_row][next_col] = PointType.ROBOTONCLRB;
-    			currentPosition[0] = next_row;
-    			currentPosition[1] = next_col;
-    			break;
-    	    default: //ERROR
-    	    	break;
-    		}
     		break;
-    	case ROBOTONGOAL:
-    		mapMatrix[row][col] = PointType.GOAL;
-    		switch(mapMatrix[next_row][next_col]) {
-    		case EMPTY:
-    			mapMatrix[next_row][next_col] = PointType.ROBOT;
-    			currentPosition[0] = next_row;
-    			currentPosition[1] = next_col;
-    			break;
-    		case GOAL:
-    			mapMatrix[next_row][next_col] = PointType.ROBOTONGOAL;
-    			currentPosition[0] = next_row;
-    			currentPosition[1] = next_col;
-    			break;
-    		case SEENCOLORBLOB:
-    			mapMatrix[next_row][next_col] = PointType.ROBOTONCLRB;
-    			currentPosition[0] = next_row;
-    			currentPosition[1] = next_col;
-    			break;
-    	    default: //ERROR
-    	    	break;
-    		}
+    	case ROBOTONGOAL: //GOAL을 밟고 지나가면 FINISHEDGOAL로 만들어야함
+    		mapMatrix[row][col] = PointType.FINISHEDGOAL;
     		break;
-    	case ROBOTONCLRB:
+    	case ROBOTONCLRB: //그대로 CLRB
     		mapMatrix[row][col] = PointType.SEENCOLORBLOB;
-    		switch(mapMatrix[next_row][next_col]) {
-    		case EMPTY:
-    			mapMatrix[next_row][next_col] = PointType.ROBOT;
-    			currentPosition[0] = next_row;
-    			currentPosition[1] = next_col;
-    			break;
-    		case GOAL:
-    			mapMatrix[next_row][next_col] = PointType.ROBOTONGOAL;
-    			currentPosition[0] = next_row;
-    			currentPosition[1] = next_col;
-    			break;
-    		case SEENCOLORBLOB:
-    			mapMatrix[next_row][next_col] = PointType.ROBOTONCLRB;
-    			currentPosition[0] = next_row;
-    			currentPosition[1] = next_col;
-    			break;
-    	    default: //ERROR
-    	    	break;
-    		}
+    		break;
+    	case ROBOTONFNGOAL: // 그대로 FNGOAL
+    		mapMatrix[row][col] = PointType.FINISHEDGOAL;
     		break;
     	default: //ERROR
+    		System.out.println("error in current row, col at mapdata.doOperation.MOVE");
+    		break;
+    	}
+    	switch(mapMatrix[next_row][next_col]) {
+    	case EMPTY:
+    		mapMatrix[next_row][next_col] = PointType.ROBOT;
+    		break;
+    	case GOAL:
+    		mapMatrix[next_row][next_col] = PointType.ROBOTONGOAL;
+    		break;
+    	case SEENCOLORBLOB:
+    		mapMatrix[next_row][next_col] = PointType.ROBOTONCLRB;
+    		break;
+    	case FINISHEDGOAL:
+    		mapMatrix[next_row][next_col] = PointType.ROBOTONFNGOAL;
+    		break;
+    	default: //ERROR
+    		System.out.println("error in next row, col at mapdata.doOperation.MOVE");
     		break;
     	}
     }
