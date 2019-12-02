@@ -86,15 +86,24 @@ class RobotOperationManager { // 시퀀스 다이어그램에서 볼 수 있듯이 이 클래스가 
 					
 				}
 		
-				else { map.repathflag = 0;} //아니면 0으로 설정
+				
 				int flag = mdm.CheckRePathFlag(); //플래그 체크
 				if (flag ==1 || check_step == true) { // 플래그가 1이거나 한 타겟지점 도착 시
 				map = mdm.GetMap(); //map 다시 받아오고
 				
+					for (int i=0; i<Map.mapsize_row; i++) {
+						for (int j=0; j<Map.mapsize_col; j++) {
+						                  
+							map.visit[Map.step][i][j] = false;
+							map.path[Map.step][i][j] = "";
+						}
+					}
+				
+				
 				map.visit[Map.step][map.current_x][map.current_y] = true; //지금 있는 위치의 visit을 true로 한다.
 				//path[i][start_x][start_y] = "(" + start_x + " , " + start_y + ")";
 				//map.path[map.step][map.start_x][map.start_y] = map.start_x + "," + map.start_y + ",";
-			
+				
 				
 					
 				PathManager pm = new PathManager(Map.mapsize_row, Map.mapsize_col, Map.map, map.visit, map.path, Map.step);
@@ -103,8 +112,14 @@ class RobotOperationManager { // 시퀀스 다이어그램에서 볼 수 있듯이 이 클래스가 
 				// 주어진 Pathmanager 정보와 또 주어지는 현재 위치 및, 방향으로 경로 계산
 				PathNode answer_pn = pm.GetData(); //계산된 경로 가져옴
 				map.path = answer_pn.path; //map에 저장
+				int tmpx1 = map.search_x[Map.step]; // n번째 타겟지점
 				
+				int tmpy1 = map.search_y[Map.step];
+				
+				
+				System.out.println(map.path[Map.step][tmpx1][tmpy1]); //n번째 타겟지점에 저장된 경로를 "->"을 기준으로 split
 				}
+				map.repathflag = 0;
 				int tmpx = map.search_x[Map.step]; // n번째 타겟지점
 				
 				int tmpy = map.search_y[Map.step];
@@ -113,7 +128,7 @@ class RobotOperationManager { // 시퀀스 다이어그램에서 볼 수 있듯이 이 클래스가 
 				operation_list = map.path[Map.step][tmpx][tmpy].split("->"); //n번째 타겟지점에 저장된 경로를 "->"을 기준으로 split
 				
 				
-				System.out.println(operation_list[check_dir]);
+				System.out.println(check_dir + " , " + operation_list[check_dir]);
 				sim.Move(operation_list[check_dir]); //명령어 하나씩 받아와서 sim에게 명령어 전달
 				mdm.GUIPrint(operation_list[check_dir]);
 				try {
@@ -126,28 +141,32 @@ class RobotOperationManager { // 시퀀스 다이어그램에서 볼 수 있듯이 이 클래스가 
 					
 					}
 
-				check_dir++; //인자++ 하고 (다음 명령어 받는다)
+				
 				sim = sim.Get(); //sim의 움직인 정보를 받아온다.
 				
 				map.current_x = SIM.current_x; //현재 위치 리턴
 				map.current_y = SIM.current_y;
 				cur_direction = sim.current_direction; //현재 방향 리턴
 				System.out.println(map.current_x + " , " + map.current_y + " , " + cur_direction);
-				/*if (operation_list[check_dir].equals("MOVE")) {
+				/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+				if (operation_list[check_dir].equals("MOVE")) {
 					if (sim.CurrentPositionSensor()) {
 					System.out.println("예상한 위치와 다릅니다.");
 					System.out.println("예상위치 : " + map.current_x + "," + map.current_y + "실제 위치 : " + SIM.current_x + "," + SIM.current_y);
+					MapDataManager.gui.setMapPoint("EMPTY", map.current_x, map.current_y);
+					
 					map.current_x = SIM.current_x;
 					map.current_y = SIM.current_y;
+					MapDataManager.gui.setMapPoint("ROBOT", map.current_x, map.current_y);
 					map.repathflag = 1;
-					check_dir=0;
+					check_dir=-1;
 					}
 					else {
 						map.repathflag = 0;
 					}
-				}*/
-				
-				
+				}
+				//////////////////////////////////////////////////////////////////////////////////////////////////////////// 잘 될런지 의문이다.
+				check_dir++; //인자++ 하고 (다음 명령어 받는다)
 				check_step = false; //기본은 false
 				if (map.current_x == tmpx && map.current_y == tmpy) {Map.step++; check_step = true; check_dir = 0;}
 				//만약 n번째 타겟지점 도착 시 step++, check_step을 true, check_dir 0으로 초기화
@@ -310,9 +329,9 @@ class PathManager {
 					//가고 싶은 좌표에 현재까지 오는데 걸린 경로 저장 후
 					
 					while(my_direc != tmp_dir) {
-						pn.path[step][nx][ny] += "LEFT->";
-						if(my_direc == WEST) my_direc = 4;
-						my_direc = direction[my_direc-1];
+						pn.path[step][nx][ny] += "RIGHT->";
+						if(my_direc == SOUTH) my_direc = -1;
+						my_direc = direction[my_direc+1];
 					} // 경로에  맞게 회전, 모두 저장
                 
                 
@@ -417,13 +436,13 @@ class ColorBlobSensorManager extends SensorManager{
 class PositionSensorManager extends SensorManager{
 	boolean AddSensorValue(int x, int y, int dir) {
 		Random random = new Random();
-		int[] Rd = {0,0,0,0,0,0,0,0,0,1};
+		int[] Rd = {0,0,0,0,0,0,1};
 		
 		
 		int[] dx = {0, -1, 0, 1};
 		int[] dy = {-1, 0, 1, 0};
 		if(x+dx[dir] >= 0 && y+dy[dir] >= 0 && x+dx[dir] < Map.mapsize_row && y+dy[dir] < Map.mapsize_col) {
-			if(Rd[random.nextInt(10)]==1) {SIM.current_x = x+dx[dir]; SIM.current_y = y+dy[dir]; 
+			if(Rd[random.nextInt(7)]==1) {SIM.current_x = x+dx[dir]; SIM.current_y = y+dy[dir]; 
 			 return true; }
 		}
 		return false;
@@ -453,9 +472,9 @@ class SIM { //SIM 클래스.
 	}
 	
 	void Move(String operation) {
-		if (operation.equals("LEFT")) {
-			if (current_direction == WEST) current_direction = 4;
-			current_direction--;
+		if (operation.equals("RIGHT")) {
+			if (current_direction == SOUTH) current_direction = -1;
+			current_direction++;
 		}
 		else {
 			if (current_direction == SOUTH) current_x++;
