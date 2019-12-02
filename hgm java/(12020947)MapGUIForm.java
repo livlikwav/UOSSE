@@ -15,7 +15,7 @@ public class MapGUIForm extends JFrame{
 	//메뉴패널 크기 설정
 	private int menuwidth = framewidth/3;
 	private int menuheight = frameheight;
-	
+
 	//지도 정보
 	MapData mapdata;
 	//패널
@@ -105,7 +105,6 @@ class MapPanel extends JPanel{
 	private Image imgseencolorblob;
 	private Image imgnewhazard;
 	private Image imgnewcolorblob;
-	private Image imgrobotongoal;
 	//더블버퍼링 위함
 	private Image buffimg; 
 	private Graphics buffimg_g;
@@ -144,8 +143,6 @@ class MapPanel extends JPanel{
 		imgnewhazard = imgnewhazard.getScaledInstance(cellimgwidth, cellimgheight, Image.SCALE_SMOOTH);
 		imgnewcolorblob = Toolkit.getDefaultToolkit().getImage(".\\NEWCOLORBLOB.png");
 		imgnewcolorblob = imgnewcolorblob.getScaledInstance(cellimgwidth, cellimgheight, Image.SCALE_SMOOTH);
-		imgrobotongoal = Toolkit.getDefaultToolkit().getImage(".\\ROBOTONGOAL.png");
-		imgrobotongoal = imgrobotongoal.getScaledInstance(cellimgwidth, cellimgheight, Image.SCALE_SMOOTH);
 	}
 	
 	@Override
@@ -182,19 +179,15 @@ class MapPanel extends JPanel{
 		case ROBOT:
 			switch(mapdata.currentDirection) {
 			case UP:
-				buffimg_g.drawImage(imgempty, xpos, ypos, this);
 				buffimg_g.drawImage(imgrobotup, xpos, ypos, this);
 				break;
 			case DOWN:
-				buffimg_g.drawImage(imgempty, xpos, ypos, this);
 				buffimg_g.drawImage(imgrobotdown, xpos, ypos, this);
 				break;
 			case LEFT:
-				buffimg_g.drawImage(imgempty, xpos, ypos, this);
 				buffimg_g.drawImage(imgrobotleft, xpos, ypos, this);
 				break;
 			case RIGHT:
-				buffimg_g.drawImage(imgempty, xpos, ypos, this);
 				buffimg_g.drawImage(imgrobotright, xpos, ypos, this);
 				break;
 			default:
@@ -217,8 +210,25 @@ class MapPanel extends JPanel{
 		case NEWCOLORBLOB:
 			buffimg_g.drawImage(imgnewcolorblob, xpos, ypos, this);
 			break;
-		case ROBOTONGOAL:
-			buffimg_g.drawImage(imgrobotongoal, xpos, ypos, this);
+		case ROBOTONGOAL: //로봇이 goal 위에 있게 두개다 그려준다
+			buffimg_g.drawImage(imggoal, xpos, ypos, this);
+			switch(mapdata.currentDirection) {
+			case UP:
+				buffimg_g.drawImage(imgrobotup, xpos, ypos, this);
+				break;
+			case DOWN:
+				buffimg_g.drawImage(imgrobotdown, xpos, ypos, this);
+				break;
+			case LEFT:
+				buffimg_g.drawImage(imgrobotleft, xpos, ypos, this);
+				break;
+			case RIGHT:
+				buffimg_g.drawImage(imgrobotright, xpos, ypos, this);
+				break;
+			default:
+				System.out.println("error in current robot state");
+				break;
+			}
 			break;
 		case ROBOTONCLRB: //로봇이 SEENCOLORBLOB 위에 있게 두개다 그려준다
 			buffimg_g.drawImage(imgseencolorblob, xpos, ypos, this);
