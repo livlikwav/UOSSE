@@ -45,9 +45,6 @@ public class MapGUIForm extends JFrame{
 
     public void setMapPoint(String type, int row, int col) {
 		switch(type) { //EMPTY만 없음
-		case "EMPTY":
-			mapdata.setMapPoint(PointType.EMPTY, row, col);
-			break;
 		case "ROBOT":
 			mapdata.setMapPoint(PointType.ROBOT, row, col);
 			break;
@@ -83,7 +80,7 @@ enum MoveDirection{
 }
 //맵 포인트의 유형
 enum PointType{
-	EMPTY, ROBOT, GOAL, SEENHAZARD, SEENCOLORBLOB, NEWHAZARD, NEWCOLORBLOB, ROBOTONGOAL, ROBOTONCLRB
+	EMPTY, ROBOT, GOAL, SEENHAZARD, SEENCOLORBLOB, NEWHAZARD, NEWCOLORBLOB, ROBOTONGOAL
 }
 
 class MapPanel extends JPanel{
@@ -230,26 +227,6 @@ class MapPanel extends JPanel{
 				break;
 			}
 			break;
-		case ROBOTONCLRB: //로봇이 SEENCOLORBLOB 위에 있게 두개다 그려준다
-			buffimg_g.drawImage(imgseencolorblob, xpos, ypos, this);
-			switch(mapdata.currentDirection) {
-			case UP:
-				buffimg_g.drawImage(imgrobotup, xpos, ypos, this);
-				break;
-			case DOWN:
-				buffimg_g.drawImage(imgrobotdown, xpos, ypos, this);
-				break;
-			case LEFT:
-				buffimg_g.drawImage(imgrobotleft, xpos, ypos, this);
-				break;
-			case RIGHT:
-				buffimg_g.drawImage(imgrobotright, xpos, ypos, this);
-				break;
-			default:
-				System.out.println("error in current robot state");
-				break;
-			}
-			break;
 		default:
 			System.out.println("error in DrawPoint");
 			break;
@@ -286,6 +263,8 @@ class MenuPanel extends JPanel{
 		label5.setHorizontalAlignment(SwingConstants.CENTER);
 		label5.setVerticalAlignment(SwingConstants.CENTER);
 		label5.setFont(new Font("맑은고딕", Font.PLAIN, 20));
+
+		//smallImgPanel imglogopanel = new smallImgPanel(".\\logo.png", menuwidth, menuwidth);
 		
 		BoxLayout layout = new BoxLayout(this, BoxLayout.Y_AXIS);
 		setLayout(layout);
@@ -293,10 +272,26 @@ class MenuPanel extends JPanel{
 		//menupanel에 UI 추가
 		add(label1);
 		add(label2);
+		//add(imglogopanel);
 		add(label3);
 		add(label4);
 		add(label5);
 		
+	}
+}
+
+class smallImgPanel extends JPanel{
+	private Image img;
+	
+	public smallImgPanel(String path, int width, int height) {
+		
+		img = Toolkit.getDefaultToolkit().getImage(path);
+		img = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+	}
+	
+	@Override
+	public void paint(Graphics g) {
+		g.drawImage(img, 0, 0, this);
 	}
 }
 
@@ -305,6 +300,7 @@ class MapData{
 	int mapcol;
     PointType[][] mapMatrix; //맵 정보
     
+	String operation; //이동명령
 	int[] currentPosition = new int[2]; //예측된 현재 로봇 위치
 	MoveDirection currentDirection; //현재 로봇 방향
 
@@ -329,10 +325,7 @@ class MapData{
 	}
 	
     public void setMapPoint(PointType type, int row, int col) {
-		switch(type) {
-		case EMPTY:
-			mapMatrix[row][col] = PointType.EMPTY;
-			break;
+		switch(type) { //EMPTY만 없음
 		case ROBOT:
 			mapMatrix[row][col] = PointType.ROBOT;
 			break;
@@ -358,20 +351,21 @@ class MapData{
 	}
     
     public void doOperation(String oper) {
+    	operation = oper;
     	//operation TURN, GO
     	if (oper == "TURN") {
-    	    switch(currentDirection) { //시계방향, 오른쪽으로 돈다.
+    	    switch(currentDirection) { //왼쪽으로 돈다 (시계반대방향으로 돈다)
     	    case UP:
-    	    	currentDirection = MoveDirection.RIGHT;
-    	    	break;
-    	    case DOWN:
     	    	currentDirection = MoveDirection.LEFT;
     	    	break;
+    	    case DOWN:
+    	    	currentDirection = MoveDirection.RIGHT;
+    	    	break;
     	    case LEFT:
-    	    	currentDirection = MoveDirection.UP;
+    	    	currentDirection = MoveDirection.DOWN;
     	    	break;
     	    case RIGHT:
-    	    	currentDirection = MoveDirection.DOWN;
+    	    	currentDirection = MoveDirection.UP;
     	    	break;
     	    default:
     			System.out.println("error in do TURN operation");
@@ -379,7 +373,9 @@ class MapData{
     	    }
 			System.out.println("currentDirection = " + currentDirection.name());
     	}
-    	else if(oper == "GO") { //옳은 명령만 온다고 가정하고 그냥 그려준다
+    	else if(oper == "GO") {
+    		//index가 벗어나지 않는다면 바꾼다
+    		//탐색지점 밟을때는 따로 그려줘야하나
     		int row, col;
     		row = currentPosition[0];
     		col = currentPosition[1];
@@ -411,86 +407,43 @@ class MapData{
     }
     
     public void goStep(int row, int col, int next_row, int next_col) {
-    	//ROBOT > EMPTY
-    	//ROBOT > GOAL
-    	//ROBOT > CLRB
-    	//ROBOTONGOAL > EMPTY
-    	//ROBOTONGOAL > GOAL
-    	//ROBOTONGOAL > CLRB
-    	//ROBOTONCLRB > EMPTY
-    	//ROBOTONCLRB > GOAL
-    	//ROBOTONCLRB > CLRB
-    	//로봇이 밟을수 있는 경우의 수는 총 9가지
-    	//CLRB는 싹다 SEENCLRB일것.
-    	switch(mapMatrix[row][col]) {
-    	case ROBOT:
-    		mapMatrix[row][col] = PointType.EMPTY;
-    		switch(mapMatrix[next_row][next_col]) {
-    		case EMPTY:
-    			mapMatrix[next_row][next_col] = PointType.ROBOT;
-    			currentPosition[0] = next_row;
-    			currentPosition[1] = next_col;
-    			break;
-    		case GOAL:
-    			mapMatrix[next_row][next_col] = PointType.ROBOTONGOAL;
-    			currentPosition[0] = next_row;
-    			currentPosition[1] = next_col;
-    			break;
-    		case SEENCOLORBLOB:
-    			mapMatrix[next_row][next_col] = PointType.ROBOTONCLRB;
-    			currentPosition[0] = next_row;
-    			currentPosition[1] = next_col;
-    			break;
-    	    default: //ERROR
-    	    	break;
-    		}
-    		break;
-    	case ROBOTONGOAL:
-    		mapMatrix[row][col] = PointType.GOAL;
-    		switch(mapMatrix[next_row][next_col]) {
-    		case EMPTY:
-    			mapMatrix[next_row][next_col] = PointType.ROBOT;
-    			currentPosition[0] = next_row;
-    			currentPosition[1] = next_col;
-    			break;
-    		case GOAL:
-    			mapMatrix[next_row][next_col] = PointType.ROBOTONGOAL;
-    			currentPosition[0] = next_row;
-    			currentPosition[1] = next_col;
-    			break;
-    		case SEENCOLORBLOB:
-    			mapMatrix[next_row][next_col] = PointType.ROBOTONCLRB;
-    			currentPosition[0] = next_row;
-    			currentPosition[1] = next_col;
-    			break;
-    	    default: //ERROR
-    	    	break;
-    		}
-    		break;
-    	case ROBOTONCLRB:
-    		mapMatrix[row][col] = PointType.SEENCOLORBLOB;
-    		switch(mapMatrix[next_row][next_col]) {
-    		case EMPTY:
-    			mapMatrix[next_row][next_col] = PointType.ROBOT;
-    			currentPosition[0] = next_row;
-    			currentPosition[1] = next_col;
-    			break;
-    		case GOAL:
-    			mapMatrix[next_row][next_col] = PointType.ROBOTONGOAL;
-    			currentPosition[0] = next_row;
-    			currentPosition[1] = next_col;
-    			break;
-    		case SEENCOLORBLOB:
-    			mapMatrix[next_row][next_col] = PointType.ROBOTONCLRB;
-    			currentPosition[0] = next_row;
-    			currentPosition[1] = next_col;
-    			break;
-    	    default: //ERROR
-    	    	break;
-    		}
-    		break;
-    	default: //ERROR
-    		break;
+    	if(mapMatrix[row][col] == PointType.ROBOTONGOAL) { //현재 있던 자리가 겹쳐있는 이미지라면
+        	if((next_col >= 0)&&(next_col <= mapcol)&&(next_row >= 0)&&(next_row <= maprow)) { //한칸 전진한 값이 map밖이 아니면
+        		if(mapMatrix[next_row][next_col] == PointType.EMPTY) { //다음 칸이 빈칸이 맞다면
+        			mapMatrix[row][col] = PointType.GOAL;
+        			mapMatrix[next_row][next_col] = PointType.ROBOT;
+        			currentPosition[0] = next_row;
+        			currentPosition[1] = next_col;
+        		}
+        		else if(mapMatrix[next_row][next_col] == PointType.GOAL) { //다음 칸이 GOAL이라면
+        			mapMatrix[row][col] = PointType.GOAL;
+        			mapMatrix[next_row][next_col] = PointType.ROBOTONGOAL;
+        			currentPosition[0] = next_row;
+        			currentPosition[1] = next_col;
+        		}
+        		else { //다음칸에 hazard나 colorblob이 있다면
+            		System.out.println("error at doing Operation goStep");
+        		}
+        	}
+    	}
+    	else { //현재 있던 자리가 겹쳐있지 않았다면
+    		if((next_col >= 0)&&(next_col <= mapcol)&&(next_row >= 0)&&(next_row <= maprow)) { //한칸 전진한 값이 map밖이 아니면
+        		if(mapMatrix[next_row][next_col] == PointType.EMPTY) { //다음 칸이 빈칸이 맞다면
+        			mapMatrix[row][col] = PointType.EMPTY;
+        			mapMatrix[next_row][next_col] = PointType.ROBOT;
+        			currentPosition[0] = next_row;
+        			currentPosition[1] = next_col;
+        		}
+        		else if(mapMatrix[next_row][next_col] == PointType.GOAL) { //다음 칸이 GOAL이라면
+        			mapMatrix[row][col] = PointType.EMPTY;
+        			mapMatrix[next_row][next_col] = PointType.ROBOTONGOAL;
+        			currentPosition[0] = next_row;
+        			currentPosition[1] = next_col;
+        		}
+        		else { //다음칸에 hazard나 colorblob이 있다면
+            		System.out.println("error at doing Operation goStep");
+        		}
+        	}
     	}
     }
 }
