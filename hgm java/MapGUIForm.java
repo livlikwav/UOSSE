@@ -83,6 +83,14 @@ public class MapGUIForm extends JFrame{
 			break;
 		}
 	}
+
+    public String getMapPoint(int row, int col) {
+    	return mapdata.getMapPoint(row, col);
+	}
+    public void updateMap() {
+    	mappanel.repaint();
+    }
+    
     public void setOperation(String oper) {
     	mapdata.doOperation(oper);
     	mappanel.repaint();
@@ -397,6 +405,10 @@ class MapData{
 			System.out.println("error in mapdata.setMapPoint");
 			break;
 		}
+	}
+
+    public String getMapPoint(int row, int col) {
+    	return mapMatrix[row][col].name();
 	}
     
     public void doOperation(String oper) {
