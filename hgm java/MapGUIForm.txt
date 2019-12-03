@@ -17,10 +17,10 @@ public class MapGUIForm extends JFrame{
 	private int menuheight = frameheight;
 	
 	//지도 정보
-	MapData mapdata;
+	private MapData mapdata;
 	//패널
-	MapPanel mappanel;
-	MenuPanel menupanel;
+	private MapPanel mappanel;
+	private MenuPanel menupanel;
 	
 	//CONSTRUCTOR
 	MapGUIForm(int maprow, int mapcol, int startrow, int startcol){
@@ -29,7 +29,7 @@ public class MapGUIForm extends JFrame{
 		setResizable(false); //화면 크기 조절 불가
 
 		mapdata = new MapData(maprow, mapcol, startrow, startcol);
-		mappanel = new MapPanel(mapdata, mapwidth, mapheight);
+		mappanel = new MapPanel(mapdata, mapwidth, mapheight, maprow, mapcol);
 		menupanel = new MenuPanel(menuwidth, menuheight);
 		
 		//************Frame 마무리
@@ -85,7 +85,7 @@ public class MapGUIForm extends JFrame{
 	}
 
     public String getMapPoint(int row, int col) {
-    	return mapdata.getMapPoint(row, col);
+    	return mapdata.getMapPoint(row, col).name();
 	}
     public void updateMap() {
     	mappanel.repaint();
@@ -101,7 +101,7 @@ public class MapGUIForm extends JFrame{
     }
 
     public String getSnapshotPoint(int row, int col) {
-    	return mapdata.getSnapshotPoint(row, col);
+    	return mapdata.getSnapshotPoint(row, col).name();
 	}
 }
 
@@ -116,6 +116,8 @@ enum PointType{
 
 class MapPanel extends JPanel{
 	private MapData mapdata;
+	private int maprow;
+	private int mapcol;
 	private int mapwidth;
 	private int mapheight;
 	private int cellwidth;
@@ -139,15 +141,17 @@ class MapPanel extends JPanel{
 	private Image buffimg; 
 	private Graphics buffimg_g;
 	
-	public MapPanel(MapData data, int width, int height) {
+	public MapPanel(MapData data, int width, int height, int MAPROW, int MAPCOL) {
 		mapdata = data;
+		maprow = MAPROW;
+		mapcol = MAPCOL;
 		//각 요소별 pixel값 초기화
 		mapwidth = width;
 		mapheight = height;
 		//row가 늘어나면 ypos값이 늘어난다
 		//col이 늘어나면 xpos값이 늘어난다
-		cellwidth = mapwidth / data.mapcol;
-		cellheight = mapheight/ data.maprow;
+		cellwidth = mapwidth / mapcol;
+		cellheight = mapheight/ maprow;
 		cellimgwidth = cellwidth - 10;
 		cellimgheight = cellheight -10;
 		//MapPanel 크기 초기화
@@ -196,8 +200,8 @@ class MapPanel extends JPanel{
 		//col이 늘어나면 xpos값이 늘어난다
 		int mapmargin = 10;
 		int xpos, ypos;
-		for(int i = 0; i < mapdata.maprow; i++) {
-			for(int j = 0; j < mapdata.mapcol; j++) {
+		for(int i = 0; i < maprow; i++) {
+			for(int j = 0; j < mapcol; j++) {
 				xpos = j*cellwidth + mapmargin;
 				ypos = i*cellheight + mapmargin;
 				DrawPoint(i,j, xpos, ypos);
@@ -206,12 +210,12 @@ class MapPanel extends JPanel{
 	}
 	
 	public void DrawPoint(int row, int col, int xpos, int ypos) {
-		switch(mapdata.mapMatrix[row][col]) {
+		switch(mapdata.getMapPoint(row, col)) {
 		case EMPTY:
 			buffimg_g.drawImage(imgempty, xpos, ypos, this);
 			break;
 		case ROBOT:
-			switch(mapdata.currentDirection) {
+			switch(mapdata.getCurrentDir()) {
 			case UP:
 				buffimg_g.drawImage(imgempty, xpos, ypos, this);
 				buffimg_g.drawImage(imgrobotup, xpos, ypos, this);
@@ -253,7 +257,7 @@ class MapPanel extends JPanel{
 			break;
 		case ROBOTONCLRB: //로봇이 SEENCOLORBLOB 위에 있게 두개다 그려준다
 			buffimg_g.drawImage(imgseencolorblob, xpos, ypos, this);
-			switch(mapdata.currentDirection) {
+			switch(mapdata.getCurrentDir()) {
 			case UP:
 				buffimg_g.drawImage(imgrobotup, xpos, ypos, this);
 				break;
@@ -276,7 +280,7 @@ class MapPanel extends JPanel{
 			break;
 		case ROBOTONFNGOAL: //로봇이 FNGOAL 위에 있게 두개다 그려준다
 			buffimg_g.drawImage(imgfinishedgoal, xpos, ypos, this);
-			switch(mapdata.currentDirection) {
+			switch(mapdata.getCurrentDir()) {
 			case UP:
 				buffimg_g.drawImage(imgrobotup, xpos, ypos, this);
 				break;
@@ -345,13 +349,13 @@ class MenuPanel extends JPanel{
 }
 
 class MapData{
-	int maprow;
-	int mapcol;
-    PointType[][] mapMatrix; //맵 정보
-    PointType[][] snapshot; //맵 정보 스냅샷
+	private int maprow;
+	private int mapcol;
+    private PointType[][] mapMatrix; //맵 정보
+    private PointType[][] snapshot; //맵 정보 스냅샷
     
-	int[] currentPosition = new int[2]; //예측된 현재 로봇 위치
-	MoveDirection currentDirection; //현재 로봇 방향
+	private int[] currentPosition = new int[2]; //예측된 현재 로봇 위치
+	private MoveDirection currentDirection; //현재 로봇 방향
 
 	public MapData(int row, int col, int startrow, int startcol) {
 		maprow = row;
@@ -414,10 +418,6 @@ class MapData{
 			System.out.println("error in mapdata.setMapPoint");
 			break;
 		}
-	}
-
-    public String getMapPoint(int row, int col) {
-    	return mapMatrix[row][col].name();
 	}
     
     public void doOperation(String oper) {
@@ -518,7 +518,15 @@ class MapData{
     	snapshot = mapMatrix;
     }
 
-    public String getSnapshotPoint(int row, int col) {
-    	return snapshot[row][col].name();
+    public PointType getSnapshotPoint(int row, int col) {
+    	return snapshot[row][col]; //여기서는 PointType으로 리턴함. 상위 메소드에서 String으로 변환
 	}
+    
+    public PointType getMapPoint(int row, int col) {
+    	return mapMatrix[row][col]; //여기서는 PointType으로 리턴함. 상위 메소드에서 String으로 변환
+	}
+    
+    public MoveDirection getCurrentDir() {
+    	return currentDirection;
+    }
 }
