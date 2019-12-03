@@ -370,6 +370,7 @@ class MapData{
 			mapMatrix[row][col] = PointType.EMPTY;
 			break;
 		case ROBOT:
+			mapMatrix[currentPosition[0]][currentPosition[1]] = PointType.EMPTY;
 			mapMatrix[row][col] = PointType.ROBOT;
 			currentPosition[0] = row;
 			currentPosition[1] = col;
