@@ -95,6 +95,14 @@ public class MapGUIForm extends JFrame{
     	mapdata.doOperation(oper);
     	mappanel.repaint();
     }
+    
+    public void setSnapshot() {
+    	mapdata.setSnapshot();
+    }
+
+    public String getSnapshotPoint(int row, int col) {
+    	return mapdata.getSnapshotPoint(row, col);
+	}
 }
 
 //로봇이 보고있는 방향
@@ -340,6 +348,7 @@ class MapData{
 	int maprow;
 	int mapcol;
     PointType[][] mapMatrix; //맵 정보
+    PointType[][] snapshot; //맵 정보 스냅샷
     
 	int[] currentPosition = new int[2]; //예측된 현재 로봇 위치
 	MoveDirection currentDirection; //현재 로봇 방향
@@ -504,4 +513,12 @@ class MapData{
     		break;
     	}
     }
+    
+    public void setSnapshot() {
+    	snapshot = mapMatrix;
+    }
+
+    public String getSnapshotPoint(int row, int col) {
+    	return snapshot[row][col].name();
+	}
 }

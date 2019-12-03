@@ -95,6 +95,14 @@ public class MapGUIForm extends JFrame{
     	mapdata.doOperation(oper);
     	mappanel.repaint();
     }
+    
+    public void setSnapshot() {
+    	mapdata.setSnapshot();
+    }
+
+    public String getSnapshotPoint(int row, int col) {
+    	return mapdata.getSnapshotPoint(row, col);
+	}
 }
 
 //·Îº¿ÀÌ º¸°íÀÖ´Â ¹æÇâ
@@ -340,6 +348,7 @@ class MapData{
 	int maprow;
 	int mapcol;
     PointType[][] mapMatrix; //¸Ê Á¤º¸
+    PointType[][] snapshot; //¸Ê Á¤º¸ ½º³À¼¦
     
 	int[] currentPosition = new int[2]; //¿¹ÃøµÈ ÇöÀç ·Îº¿ À§Ä¡
 	MoveDirection currentDirection; //ÇöÀç ·Îº¿ ¹æÇâ
@@ -370,7 +379,6 @@ class MapData{
 			mapMatrix[row][col] = PointType.EMPTY;
 			break;
 		case ROBOT:
-			mapMatrix[currentPosition[0]][currentPosition[1]] = PointType.EMPTY;
 			mapMatrix[row][col] = PointType.ROBOT;
 			currentPosition[0] = row;
 			currentPosition[1] = col;
@@ -505,4 +513,12 @@ class MapData{
     		break;
     	}
     }
+    
+    public void setSnapshot() {
+    	snapshot = mapMatrix;
+    }
+
+    public String getSnapshotPoint(int row, int col) {
+    	return snapshot[row][col].name();
+	}
 }
