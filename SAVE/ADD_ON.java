@@ -31,9 +31,17 @@ class RobotOperationManager { // 시퀀스 다이어그램에서 볼 수 있듯이 이 클래스가 
    SIM sim = new SIM(); //sim 객체 생성
    Map map = mdm.GetMap(); // mdm에서 만들어진 map 객체 정보 받아옴.
    
-   int cur_direction;
+   
    int next_opr;
    boolean check_step;
+   
+   int mapstartx = mdm.GetMapStartX();
+   int mapstarty = mdm.GetMapStartY();
+   int mapcurrentx = mdm.GetMapCurrentX();
+   int mapcurrenty = mdm.GetMapCurrentY();
+   int mapstep = mdm.GetMapStep();
+   String[][][] mappath = mdm.GetMapPath();
+   boolean[][][] mapvisit = mdm.GetMapVisit();
    
    String[] operation_list; // 명령어 하나씩 받아온다.
    RobotOperationManager() throws IOException {
@@ -42,20 +50,22 @@ class RobotOperationManager { // 시퀀스 다이어그램에서 볼 수 있듯이 이 클래스가 
       RandomColorBlobCreate();
       RandomHazardCreate();
       MapDataManager.gui.setSnapshot();
-      cur_direction = SOUTH; //시작 방향을 설정
+      mdm.SetMapCurrentDir(SOUTH);//시작 방향을 설정
+      
       
       next_opr=0; //operation_list 인덱스 하나씩 늘리다가 한 타겟지점 도착하면 초기화하는 변수
       check_step = true; // 한 타겟지점 도착한 거 체크해주는 변수
-      SetCurrentPosition(map.start_x , map.start_y);
+      SetCurrentPosition(mdm.GetMapStartX() , mdm.GetMapStartY());
       
-      sim.TranslateMoveOperation(map.current_x, map.current_y, map.currecnt_direction); //나중에 이거 함수 바꿔야한다.
+      sim.TranslateMoveOperation(mdm.GetMapCurrentX(), mdm.GetMapCurrentY(), mdm.GetMapCurrentDirection()); //나중에 이거 함수 바꿔야한다.
       //sim에게 현재 상태를 입력해줌
       
       do {//일단 한번은 무조건 path생성
-            sim.ColorBlobSensor();
+            mdm.GetColorBolobSensor(sim, mdm.GetMapCurrentX(), mdm.GetMapCurrentY(), mdm.GetMapCurrentDirection(), mdm.GetMap());
 
-            if (sim.HazardSensor()) { //Hazard point 발견 시
-               map.repathflag = true; //플래그 1로 설정
+            if (mdm.GetHazardSensor(sim, mdm.GetMapCurrentX(), mdm.GetMapCurrentY(), mdm.GetMapCurrentDirection(), mdm.GetMap())) { //Hazard point 발견 시
+               mdm.SetMapFlag(true);
+               
                next_opr = 0;
             }
        
@@ -67,57 +77,65 @@ class RobotOperationManager { // 시퀀스 다이어그램에서 볼 수 있듯이 이 클래스가 
 
             	MakePath();
             	check_step = false; //기본은 false
-            	map.repathflag = false;
+            	mdm.SetMapFlag(false);
             	next_opr = 0;
             }
             
             
-            int tmpx = map.search_x[map.step]; // n번째 타겟지점
-            int tmpy = map.search_y[map.step];
-            operation_list = map.path[map.step][tmpx][tmpy].split("->"); //n번째 타겟지점에 저장된 경로를 "->"을 기준으로 split
+            int tmpx = mdm.GetMapSearchX()[mdm.GetMapStep()]; // n번째 타겟지점
+            int tmpy = mdm.GetMapSearchY()[mdm.GetMapStep()];
+            operation_list = mdm.GetMapPath()[mdm.GetMapStep()][tmpx][tmpy].split("->"); //n번째 타겟지점에 저장된 경로를 "->"을 기준으로 split
             System.out.println(next_opr + " , " + operation_list[next_opr]);
             
             
             
             
             	sim.Move(operation_list[next_opr]); //명령어 하나씩 받아와서 sim에게 명령어 전달
-            	
+            	sim = sim.Get(); //sim의 움직인 정보를 받아온다.
+            	int tempx = mdm.GetMapCurrentX();
+            	int tempy = mdm.GetMapCurrentY();
+            	SetCurrentPosition(SIM.current_x , SIM.current_y);
             	if (operation_list[next_opr].equals("MOVE")) {
-                    if (sim.CurrentPositionSensor()) {
+                    if (mdm.GetCurrentPositionSensor(sim, mdm.GetMapCurrentX(), mdm.GetMapCurrentY(), mdm.GetMapCurrentDirection(), mdm.GetMap())) {
                     System.out.println("예상한 위치와 다릅니다.");
-                    System.out.println("예상위치 : " + map.current_x + "," + map.current_y + "실제 위치 : " + SIM.current_x + "," + SIM.current_y);
-                    MapDataManager.GUIMapSetPrint(MapDataManager.gui.getSnapshotPoint(map.current_x, map.current_y), map.current_x, map.current_y);
+                    System.out.println("예상위치 : " + mdm.GetMapCurrentX() + "," + mdm.GetMapCurrentY() + "실제 위치 : " + SIM.current_x + "," + SIM.current_y);
+                    MapDataManager.GUIMapSetPrint(MapDataManager.gui.getSnapshot2Point(tempx, tempy), tempx, tempy);
                     SetCurrentPosition(SIM.current_x , SIM.current_y);
-                    MapDataManager.GUIMapSetPrint("ROBOT", map.current_x, map.current_y);
+                    MapDataManager.GUIMapSetPrint("ROBOT", mdm.GetMapCurrentX(), mdm.GetMapCurrentY());
                     if (RobotOnGoal(tmpx, tmpy)) {
-                    	MapDataManager.GUIMapSetPrint("ROBOTONGOAL", map.current_x, map.current_y);
+                    	MapDataManager.GUIMapSetPrint("ROBOTONGOAL", mdm.GetMapCurrentX(), mdm.GetMapCurrentY());
                     }
-                    map.repathflag = true;
+                    mdm.SetMapFlag(true);
                     
                     }
+                    else {
+                    	MapDataManager.GUIOperationPrint(operation_list[next_opr]);
+                    }
                 }
+            	else {
             	MapDataManager.GUIOperationPrint(operation_list[next_opr]);
-            	sim = sim.Get(); //sim의 움직인 정보를 받아온다.
+            	}
+            	MapDataManager.gui.setSnapshot2();;
             	SetCurrentPosition(SIM.current_x , SIM.current_y);
+            mdm.SetMapCurrentDir(sim.current_direction);//현재 방향 리턴
             
-            cur_direction = sim.current_direction; //현재 방향 리턴
-            System.out.println(map.current_x + " , " + map.current_y + " , " + cur_direction);
+            System.out.println(mdm.GetMapCurrentX() + " , " + mdm.GetMapCurrentY() + " , " + mdm.GetMapCurrentDirection());
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////
             
             //////////////////////////////////////////////////////////////////////////////////////////////////////////// 잘 될런지 의문이다.
             next_opr++; //인자++ 하고 (다음 명령어 받는다)
             
-            if (RobotOnGoal(tmpx, tmpy)) {map.step++; check_step = true; next_opr = 0;}
+            if (RobotOnGoal(tmpx, tmpy)) {mdm.SetMapStep(mdm.GetMapStep()+1); check_step = true; next_opr = 0;}
             //만약 n번째 타겟지점 도착 시 step++, check_step을 true, next_opr 0으로 초기화
             
    
-      }while(map.step != map.search_cnt); // step이 탐색지점 개수와 같을 때까지
+      }while(mdm.GetMapStep() != mdm.GetMapSearchCount()); // step이 탐색지점 개수와 같을 때까지
    }
    
    
    
    boolean RobotOnGoal(int x, int y) {
-	   if (map.current_x == x && map.current_y == y)
+	   if (mdm.GetMapCurrentX() == x && mdm.GetMapCurrentY() == y)
 		   return true;
 	   else
 		   return false;
@@ -125,25 +143,30 @@ class RobotOperationManager { // 시퀀스 다이어그램에서 볼 수 있듯이 이 클래스가 
    
    
    void MakePath() {
-   	PathManager pm = new PathManager(Map.mapsize_row, Map.mapsize_col, Map.map, map.visit, map.path, map.step);
+   	PathManager pm = new PathManager(mdm.GetMapRow(), mdm.GetMapCol(), Map.map, mdm.GetMapVisit(), mdm.GetMapPath(), mdm.GetMapStep());
        //새로운 pathmanager 객체 생성, 바뀌는 건 visit, path, step뿐 -> 모두 한 타겟지점 도착 시 다음걸로 바뀜
-       pm.CalculateOptimalPath(map.current_x, map.current_y, cur_direction); 
+       pm.CalculateOptimalPath(mdm.GetMapCurrentX(), mdm.GetMapCurrentY(), mdm.GetMapCurrentDirection()); 
        // 주어진 Pathmanager 정보와 또 주어지는 현재 위치 및, 방향으로 경로 계산
        PathNode answer_pn = pm.GetData(); //계산된 경로 가져옴
-       map.path = answer_pn.path; //map에 저장
+       for (int i=0; i<mdm.GetMapRow(); i++) {
+    	   for (int j=0; j<mdm.GetMapCol(); j++) {
+    		   mdm.SetMapPath(mdm.GetMapStep(), i, j, answer_pn.path[mdm.GetMapStep()][i][j]);//map에 저장
+    	   }
+       }
+       
    }
    
 
    
    void initalizeVistPath() {
-	   for (int i=0; i<Map.mapsize_row; i++) {
-           for (int j=0; j<Map.mapsize_col; j++) {
-                             
-              map.visit[map.step][i][j] = false;
-              map.path[map.step][i][j] = "";
+	   for (int i=0; i<mdm.GetMapRow(); i++) {
+           for (int j=0; j<mdm.GetMapCol(); j++) {
+                  
+        	   mdm.SetMapPath(mdm.GetMapStep(), i, j, "");
+        	   mdm.SetMapVisit(mdm.GetMapStep(), i, j, false);
            }
         }
-	   map.visit[map.step][map.current_x][map.current_y] = true;
+	   mdm.SetMapVisit(mdm.GetMapStep(), mdm.GetMapCurrentX(), mdm.GetMapCurrentY(), true);
    }
    
    
@@ -182,8 +205,8 @@ class RobotOperationManager { // 시퀀스 다이어그램에서 볼 수 있듯이 이 클래스가 
 	      }
 	}
 	void SetCurrentPosition(int x, int y) {
-		   map.current_x = x;
-		   map.current_y = y;
+		   mdm.SetMapCurrentX(x);
+		   mdm.SetMapCurrentY(y);
 	   }
 }
 
@@ -205,6 +228,12 @@ class MapDataManager { //맵에게 전달한 변수들 저장, 대부분 이름으로 역할 추정 가
    int hazard_cnt;
    
    Map mp = new Map(); //map 객체 생성 후 전달.
+   HazardSensorManager hsm = new HazardSensorManager();
+   ColorBlobSensorManager cbsm = new ColorBlobSensorManager();
+   PositionSensorManager psm = new PositionSensorManager();
+   
+   
+   
    static MapGUIForm gui;
    
    MapDataManager() throws IOException {
@@ -287,6 +316,83 @@ class MapDataManager { //맵에게 전달한 변수들 저장, 대부분 이름으로 역할 추정 가
    Map GetMap() {
       return mp.GetMap();
    }
+   int GetMapCurrentDirection() {
+	   return mp.GetcurrentDir();
+   }
+   
+   int GetMapStartX() {
+	   return mp.GetStartX();
+   }
+   int GetMapStartY() {
+	   return mp.GetStartY();
+   }
+   int GetMapCurrentX() {
+	   return mp.GetCurrentX();
+   }
+   int GetMapCurrentY() {
+	   return mp.GetCurrentY();
+   }
+   int GetMapStep() {
+	   return mp.GetStep();
+   }
+   String[][][] GetMapPath() {
+	   return mp.GetPath();
+   }
+   boolean[][][] GetMapVisit() {
+	   return mp.GetVisit();
+   }
+   int[] GetMapSearchX() {
+	   return mp.GetSearchX();
+   }
+   int[] GetMapSearchY() {
+	   return mp.GetSearchY();
+   }
+   int GetMapRow() {
+	   return mp.GetMapRow();
+   }
+   int GetMapCol() {
+	   return mp.GetMapCol();
+   }
+   int GetMapSearchCount() {
+	   return mp.GetSearchCount();
+   }
+   boolean GetColorBolobSensor(SIM sim, int x, int y, int dir, Map mp) {
+	   return cbsm.AddSensorValue(sim, x, y, dir, mp);
+   }
+   boolean GetHazardSensor(SIM sim,int x, int y, int dir,Map mp) {
+	   return hsm.AddSensorValue(sim, x, y, dir, mp);
+   }
+   boolean GetCurrentPositionSensor(SIM sim, int x, int y, int dir, Map mp) {
+	   return psm.AddSensorValue(sim, x, y, dir, mp);
+   }
+   void SetMapCurrentDir(int dir) {
+	   mp.SetCurrentDirection(dir);
+   }
+   void SetMapStartX(int x) {
+	   
+   }
+   void SetMapStartY(int y) {
+	   
+   }
+   void SetMapFlag(boolean flag) {
+	   mp.SetFlag(flag);
+   }
+   void SetMapStep(int step) {
+	   mp.SetStep(step);
+   }
+   void SetMapPath(int step, int x, int y, String s) {
+	   mp.SetPath(step, x, y, s);
+   }
+   void SetMapVisit(int step, int x, int y, boolean b) {
+	   mp.SetVisit(step, x, y, b);
+   }
+   void SetMapCurrentX(int x) {
+	   mp.SetCurrentX(x);
+   }
+   void SetMapCurrentY(int y) {
+	   mp.SetCurrentY(y);
+   }
+   
    
 }
    
@@ -423,9 +529,9 @@ class SensorNode { //안쓴다. 나중에 없앤다
 }
 
 abstract class SensorManager{ // 이거도 손봐야함.
-   abstract boolean AddSensorValue(int x, int y, int dir);
+   abstract boolean AddSensorValue(SIM sim, int x, int y, int dir, Map mp);
    
-   boolean SetRePathFalg() {
+   boolean SetRePathFlag() {
       return true;
    }
 }
@@ -433,62 +539,39 @@ abstract class SensorManager{ // 이거도 손봐야함.
 class HazardSensorManager extends SensorManager{
 	
    
-   boolean AddSensorValue(int x, int y, int dir){
-	  MapDataManager mdm = null;
-      int[] dx = {0, -1, 0, 1};
-      int[] dy = {-1, 0, 1, 0};
-      if(x+dx[dir] >= 0 && y+dy[dir] >= 0 && x+dx[dir] < Map.mapsize_row && y+dy[dir] < Map.mapsize_col) {
-         if(Map.map[x+dx[dir]][y+dy[dir]] == 5) {
-        	 Map.map[x+dx[dir]][y+dy[dir]] =2; 
-        	 
-        	mdm.GUIMapSetPrint("SEENHAZARD", x+dx[dir], y+dy[dir]);
-        	
-         return true; }
-      }
-      //현재 바라보는 방향의 한칸 앞이 위험지역인가
-      
-      return false;
-      
+   boolean AddSensorValue(SIM sim, int x, int y, int dir, Map mp){
+	  return sim.HazardSensor(sim, x, y, dir, mp);
    }
 }
 
 class ColorBlobSensorManager extends SensorManager{
-   boolean AddSensorValue(int x, int y, int dir) {
+   boolean AddSensorValue(SIM sim, int x, int y, int dir, Map mp) {
 	  
       int[] dx = {0, -1, 0, 1};
       int[] dy = {-1, 0, 1, 0};
-      
+      boolean check = false;
       for(int i=0; i<4; i++) {
-         if (x+dx[i] >= 0 && y+dy[i] >= 0 && x+dx[i] < Map.mapsize_row && y+dy[i] < Map.mapsize_col) {
+         if (x+dx[i] >= 0 && y+dy[i] >= 0 && x+dx[i] < mp.GetMapRow() && y+dy[i] < mp.GetMapCol()) {
             if(Map.map[x+dx[i]][y+dy[i]] == 3) { 
-            	
+            	Map.map[x+dx[i]][y+dy[i]] = 4;
                //System.out.println("중요 위치 : " + (x+dx[i]) + "," + (y+dy[i]));
             	MapDataManager.GUIMapSetPrint("SEENCOLORBLOB", x+dx[i], y+dy[i]); 
                
                
                
-            
-               return true;}
+               check = true;
+               }
          }
-         
+        
       }
-      return false;
+      if (check) return true;
+      else return false;
    }
 }
 
 class PositionSensorManager extends SensorManager{
-   boolean AddSensorValue(int x, int y, int dir) {
-      Random random = new Random();
-      int[] Rd = {0,0,0,0,0,0,1};
-      
-      
-      int[] dx = {0, -1, 0, 1};
-      int[] dy = {-1, 0, 1, 0};
-      if(x+dx[dir] >= 0 && y+dy[dir] >= 0 && x+dx[dir] < Map.mapsize_row && y+dy[dir] < Map.mapsize_col) {
-         if(Rd[random.nextInt(7)]==1) {SIM.current_x = x+dx[dir]; SIM.current_y = y+dy[dir]; 
-          return true; }
-      }
-      return false;
+   boolean AddSensorValue(SIM sim, int x, int y, int dir, Map mp) {
+      return sim.CurrentPositionSensor(sim, x, y, dir, mp);
    }
 }
 
@@ -503,9 +586,7 @@ class SIM { //SIM 클래스.
    static int current_y;
    int current_direction;
    
-   ColorBlobSensorManager cbs = new ColorBlobSensorManager();
-   HazardSensorManager hs = new HazardSensorManager();
-   PositionSensorManager ps = new PositionSensorManager();
+   
    
    
    void TranslateMoveOperation(int currentx, int currenty, int current_direction) {
@@ -532,17 +613,61 @@ class SIM { //SIM 클래스.
       return this;
    }
    
-   boolean ColorBlobSensor() {
-      return cbs.AddSensorValue(current_x, current_y, this.current_direction);
-   }
+   boolean ColorBlobSensor(SIM sim, int x, int y, int dir, Map mp) {
+	   
+	   int[] dx = {0, -1, 0, 1};
+	      int[] dy = {-1, 0, 1, 0};
+	      boolean check = false;
+	      for(int i=0; i<4; i++) {
+	         if (x+dx[i] >= 0 && y+dy[i] >= 0 && x+dx[i] < mp.GetMapRow() && y+dy[i] < mp.GetMapCol()) {
+	            if(Map.map[x+dx[i]][y+dy[i]] == 3) { 
+	            	Map.map[x+dx[i]][y+dy[i]] = 4;
+	               //System.out.println("중요 위치 : " + (x+dx[i]) + "," + (y+dy[i]));
+	            	MapDataManager.GUIMapSetPrint("SEENCOLORBLOB", x+dx[i], y+dy[i]); 
+	               
+	               
+	               
+	               check = true;
+	               }
+	         }
+	        
+	      }
+	      if (check) return true;
+	      else return false;
+	   }
    
-   boolean HazardSensor() {
-      
-      return hs.AddSensorValue(current_x, current_y, this.current_direction);
-   }
    
-   boolean CurrentPositionSensor() {
-      return ps.AddSensorValue(current_x, current_y, this.current_direction);
+   
+   boolean HazardSensor(SIM sim, int x, int y, int dir, Map mp) {
+	   
+	   MapDataManager mdm = null;
+	      int[] dx = {0, -1, 0, 1};
+	      int[] dy = {-1, 0, 1, 0};
+	      if(x+dx[dir] >= 0 && y+dy[dir] >= 0 && x+dx[dir] < mp.GetMapRow() && y+dy[dir] < mp.GetMapCol()) {
+	         if(Map.map[x+dx[dir]][y+dy[dir]] == 5) {
+	        	 Map.map[x+dx[dir]][y+dy[dir]] =2; 
+	        	 
+	        	mdm.GUIMapSetPrint("SEENHAZARD", x+dx[dir], y+dy[dir]);
+	        	
+	         return true; }
+	      }
+	      //현재 바라보는 방향의 한칸 앞이 위험지역인가
+	      
+	      return false;
+}
+   
+   boolean CurrentPositionSensor(SIM sim, int x, int y, int dir, Map mp) {
+	   Random random = new Random();
+	      int[] Rd = {0,0,0,0,0,0,1};
+	      
+	      
+	      int[] dx = {0, -1, 0, 1};
+	      int[] dy = {-1, 0, 1, 0};
+	      if(x+dx[dir] >= 0 && y+dy[dir] >= 0 && x+dx[dir] < mp.GetMapRow() && y+dy[dir] < mp.GetMapCol()) {
+	         if(Rd[random.nextInt(7)]==1) {sim.current_x = x+dx[dir]; sim.current_y = y+dy[dir]; 
+	          return true; }
+	      }
+	      return false;
    }
 }
 
@@ -689,25 +814,25 @@ class InputMapDataForm //입력 폼 클래스
 }
 
 class Map{
-   static int mapsize_row;
-   static int mapsize_col;
+   private int mapsize_row;
+   private int mapsize_col;
    static int[][] map;
    
-   int start_x;
-   int start_y;
-   boolean[][][] visit;
-   String[][][] path;
-   int[] search_x;
-   int[] search_y;
-   int[] hazard_x;
-   int[] hazard_y;
-   int search_cnt;
-   int hazard_cnt;
-   int current_x;
-   int current_y;
-   int currecnt_direction;
-   boolean repathflag;
-   int step=0;
+   private int start_x;
+   private int start_y;
+   private boolean[][][] visit;
+   private String[][][] path;
+   private int[] search_x;
+   private int[] search_y;
+   private int[] hazard_x;
+   private int[] hazard_y;
+   private int search_cnt;
+   private int hazard_cnt;
+   private int current_x;
+   private int current_y;
+   private int current_direction;
+   private boolean repathflag;
+   private int step=0;
    
    
    
@@ -715,15 +840,15 @@ class Map{
       SetMap(row, col, start_x, start_y, map, visit, path, search_cnt, hazard_cnt, current_x, current_y, current_direction, search_x, search_y, hazard_x, hazard_y);
    }
    void SetMap(int row, int col, int start_x, int start_y, int[][] map, boolean[][][] visit, String[][][]path, int search_cnt, int hazard_cnt, int current_x, int current_y, int current_direction, int[] search_x, int[] search_y, int[] hazard_x, int[] hazard_y) {
-      mapsize_row = row;
-      mapsize_col = col;
+      this.mapsize_row = row;
+      this.mapsize_col = col;
       this.start_x = start_x;
       this.start_y = start_y;
       this.visit = visit;
       this.path = path;
       this.search_cnt = search_cnt;
       this.hazard_cnt = hazard_cnt;
-      this.currecnt_direction = current_direction;
+      this.current_direction = current_direction;
       this.current_x = current_x;
       this.current_y = current_y;
       this.search_x = search_x;
@@ -732,10 +857,77 @@ class Map{
       this.hazard_y = hazard_y;
       Map.map = map;
    }
+   void SetCurrentX(int x) {
+	   this.current_x =x;
+   }
+   void SetCurrentY(int y) {
+	   this.current_y = y;
+   }
+   void SetPath(int step, int x, int y, String s) {
+	   this.path[step][x][y] = s;
+   }
+   void SetVisit(int step, int x, int y, boolean b) {
+	   this.visit[step][x][y] = b;
+   }
+   void SetCurrentDirection(int cur) {
+	   this.current_direction = cur;
+   }
+   
+   void SetFlag(boolean flag) {
+	   this.repathflag  = flag;
+   }
+   void SetStep(int step) {
+	   this.step = step;
+   }
    
    boolean GetRePathFlag() {
-      return repathflag;
+      return this.repathflag;
    }
+   
+   int GetStartX() {
+	   return this.start_x;
+   }
+   int GetStartY() {
+	   return this.start_y;
+   }
+   int GetCurrentX() {
+	   return this.current_x;
+   }
+   int GetCurrentY() {
+	   return this.current_y;
+   }
+   int GetStep() {
+	   return this.step;
+   }
+   String[][][] GetPath() {
+	   return this.path;
+   }
+   int GetcurrentDir() {
+	   return this.current_direction;
+   }
+   int GetSearchCount() {
+	   return this.search_cnt;
+   }
+   
+   boolean[][][] GetVisit() {
+	   return this.visit;
+   }
+   boolean GetFlag() {
+	   return this.repathflag;
+   }
+   int[] GetSearchX() {
+	   return this.search_x;
+   }
+   int[] GetSearchY() {
+	   return this.search_y;
+   }
+   int GetMapRow() {
+	   return this.mapsize_row;
+   }
+   int GetMapCol() {
+	   return this.mapsize_col;
+   }
+   
    
    Map GetMap() {
       return this;
