@@ -7512,8 +7512,8 @@
 														"$ref": "AAAAAAFu0MI25s0YDwg="
 													},
 													"font": "Arial;13;0",
-													"left": 70.97900390625,
-													"top": 5,
+													"left": 78.97900390625,
+													"top": 21,
 													"width": 222.8505859375,
 													"height": 13,
 													"text": "Read Sensor Data Sequence Diagram"
@@ -7525,15 +7525,17 @@
 														"$ref": "AAAAAAFu0MI25s0YDwg="
 													},
 													"font": "Arial;13;1",
-													"left": 5,
-													"top": 5,
+													"left": 13,
+													"top": 21,
 													"width": 60.97900390625,
 													"height": 13,
 													"text": "interaction"
 												}
 											],
 											"font": "Arial;13;0",
-											"width": 1724,
+											"left": 8,
+											"top": 16,
+											"width": 1377,
 											"height": 660,
 											"nameLabel": {
 												"$ref": "AAAAAAFu0MI2580ZxeM="
@@ -10927,8 +10929,8 @@
 														"$ref": "AAAAAAFuRMimyyAz+i0="
 													},
 													"font": "Arial;13;0",
-													"left": 75.97900390625,
-													"top": 5,
+													"left": 78.97900390625,
+													"top": 13,
 													"width": 162.88427734375,
 													"height": 13,
 													"text": "RunRobotSearchingSenario"
@@ -10940,15 +10942,16 @@
 														"$ref": "AAAAAAFuRMimyyAz+i0="
 													},
 													"font": "Arial;13;1",
-													"left": 10,
-													"top": 5,
+													"left": 13,
+													"top": 13,
 													"width": 60.97900390625,
 													"height": 13,
 													"text": "interaction"
 												}
 											],
 											"font": "Arial;13;0",
-											"left": 5,
+											"left": 8,
+											"top": 8,
 											"width": 556,
 											"height": 595,
 											"nameLabel": {
@@ -11922,7 +11925,7 @@
 													},
 													"font": "Arial;13;0",
 													"left": 310.97900390625,
-													"top": 5,
+													"top": 13,
 													"width": 240.19873046875,
 													"height": 13,
 													"text": "Run Robot Searching Sequence Diagram"
@@ -11935,7 +11938,7 @@
 													},
 													"font": "Arial;13;1",
 													"left": 245,
-													"top": 5,
+													"top": 13,
 													"width": 60.97900390625,
 													"height": 13,
 													"text": "interaction"
@@ -11943,6 +11946,7 @@
 											],
 											"font": "Arial;13;0",
 											"left": 240,
+											"top": 8,
 											"width": 1753,
 											"height": 1025,
 											"nameLabel": {
@@ -18963,7 +18967,7 @@
 													"font": "Arial;13;0",
 													"left": -128,
 													"top": 4,
-													"width": 119.91357421875,
+													"width": 124.185546875,
 													"height": 13,
 													"text": "(from RobotArtifacts)"
 												},
@@ -18984,7 +18988,7 @@
 											"font": "Arial;13;0",
 											"left": 472,
 											"top": 432,
-											"width": 55.53173828125,
+											"width": 56.40771484375,
 											"height": 38,
 											"stereotypeLabel": {
 												"$ref": "AAAAAAFu1fjuL/PsO1w="
@@ -21264,7 +21268,7 @@
 													},
 													"visible": false,
 													"font": "Arial;13;0",
-													"width": 110.5126953125,
+													"width": 114.8798828125,
 													"height": 13,
 													"text": "(from MapArtifacts)"
 												},
@@ -31225,7 +31229,7 @@
 											"font": "Arial;13;0",
 											"left": -304,
 											"top": -96,
-											"width": 137.033203125,
+											"width": 142.517578125,
 											"height": 13,
 											"text": "(from Component View)"
 										},
@@ -31405,7 +31409,7 @@
 											"font": "Arial;13;0",
 											"left": 576,
 											"top": -528,
-											"width": 137.033203125,
+											"width": 142.517578125,
 											"height": 13,
 											"text": "(from Component View)"
 										},
@@ -31585,7 +31589,7 @@
 											"font": "Arial;13;0",
 											"left": 64,
 											"top": -464,
-											"width": 137.033203125,
+											"width": 142.517578125,
 											"height": 13,
 											"text": "(from Component View)"
 										},
@@ -31740,7 +31744,7 @@
 											"font": "Arial;13;0",
 											"left": -304,
 											"top": 48,
-											"width": 53.47265625,
+											"width": 53.904296875,
 											"height": 13,
 											"text": "«artifact»"
 										},
@@ -31767,7 +31771,7 @@
 											"font": "Arial;13;0",
 											"left": -304,
 											"top": 48,
-											"width": 137.033203125,
+											"width": 142.517578125,
 											"height": 13,
 											"text": "(from Component View)"
 										},
@@ -31923,7 +31927,7 @@
 											"font": "Arial;13;0",
 											"left": -96,
 											"top": -512,
-											"width": 53.47265625,
+											"width": 53.904296875,
 											"height": 13,
 											"text": "«artifact»"
 										},
@@ -31936,7 +31940,7 @@
 											"font": "Arial;13;1",
 											"left": 1021,
 											"top": 272,
-											"width": 68.62451171875,
+											"width": 69.86865234375,
 											"height": 13,
 											"text": "MapGUI.jar"
 										},
@@ -31950,7 +31954,7 @@
 											"font": "Arial;13;0",
 											"left": -96,
 											"top": -512,
-											"width": 137.033203125,
+											"width": 142.517578125,
 											"height": 13,
 											"text": "(from Component View)"
 										},
@@ -31971,7 +31975,7 @@
 									"font": "Arial;13;0",
 									"left": 1016,
 									"top": 265,
-									"width": 78.62451171875,
+									"width": 79.86865234375,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAFu1f8eX/bYYZk="
@@ -32055,7 +32059,7 @@
 							"containerChangeable": true,
 							"left": 1016,
 							"top": 216,
-							"width": 78.62451171875,
+							"width": 79.86865234375,
 							"height": 75,
 							"stereotypeDisplay": "icon",
 							"nameCompartment": {
@@ -32106,7 +32110,7 @@
 											"font": "Arial;13;0",
 											"left": 752,
 											"top": -1040,
-											"width": 53.47265625,
+											"width": 53.904296875,
 											"height": 13,
 											"text": "«artifact»"
 										},
@@ -32133,7 +32137,7 @@
 											"font": "Arial;13;0",
 											"left": 752,
 											"top": -1040,
-											"width": 137.033203125,
+											"width": 142.517578125,
 											"height": 13,
 											"text": "(from Component View)"
 										},
@@ -32584,7 +32588,7 @@
 											"font": "Arial;13;1",
 											"left": 701,
 											"top": 262,
-											"width": 81.61181640625,
+											"width": 82.65283203125,
 											"height": 13,
 											"text": "MapGUIForm"
 										},
@@ -32598,7 +32602,7 @@
 											"font": "Arial;13;0",
 											"left": -192,
 											"top": -320,
-											"width": 137.033203125,
+											"width": 142.517578125,
 											"height": 13,
 											"text": "(from Component View)"
 										},
@@ -32619,7 +32623,7 @@
 									"font": "Arial;13;0",
 									"left": 696,
 									"top": 255,
-									"width": 91.61181640625,
+									"width": 92.65283203125,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAFu1gENJff5aiA="
@@ -32703,7 +32707,7 @@
 							"containerChangeable": true,
 							"left": 696,
 							"top": 232,
-							"width": 91.61181640625,
+							"width": 92.65283203125,
 							"height": 49,
 							"stereotypeDisplay": "icon",
 							"nameCompartment": {
@@ -32745,7 +32749,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 802,
+									"left": 803,
 									"top": 255,
 									"height": 13,
 									"alpha": 1.5707963267948966,
@@ -32766,7 +32770,7 @@
 									},
 									"visible": null,
 									"font": "Arial;13;0",
-									"left": 802,
+									"left": 803,
 									"top": 270,
 									"height": 13,
 									"alpha": 1.5707963267948966,
@@ -32787,7 +32791,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 803,
+									"left": 804,
 									"top": 226,
 									"height": 13,
 									"alpha": -1.5707963267948966,
@@ -32806,7 +32810,7 @@
 								"$ref": "AAAAAAFu1ftMffZnM+U="
 							},
 							"lineStyle": 1,
-							"points": "855:249;752.805908203125:245.51189536236703",
+							"points": "855:249;753.326416015625:245.56800333658853",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAFu1gFDfPgi7rY="
@@ -32900,7 +32904,7 @@
 								"$ref": "AAAAAAFu1frn7PYR0tE="
 							},
 							"lineStyle": 1,
-							"points": "671:295;729.805908203125:252.45278862847223",
+							"points": "671:295;730.326416015625:252.01324869791668",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAFu1gFlnPg0zuk="
@@ -32955,7 +32959,7 @@
 											"font": "Arial;13;1",
 											"left": 661,
 											"top": 390,
-											"width": 163.24267578125,
+											"width": 168.24462890625,
 											"height": 13,
 											"text": "Robot Movement Interface"
 										},
@@ -32969,7 +32973,7 @@
 											"font": "Arial;13;0",
 											"left": 128,
 											"top": -288,
-											"width": 137.033203125,
+											"width": 142.517578125,
 											"height": 13,
 											"text": "(from Component View)"
 										},
@@ -32990,7 +32994,7 @@
 									"font": "Arial;13;0",
 									"left": 656,
 									"top": 383,
-									"width": 173.24267578125,
+									"width": 178.24462890625,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAFu1gF8ZPhGYKY="
@@ -33074,7 +33078,7 @@
 							"containerChangeable": true,
 							"left": 656,
 							"top": 360,
-							"width": 173.24267578125,
+							"width": 178.24462890625,
 							"height": 49,
 							"stereotypeDisplay": "icon",
 							"nameCompartment": {
@@ -33116,7 +33120,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 804,
+									"left": 805,
 									"top": 379,
 									"height": 13,
 									"alpha": 1.5707963267948966,
@@ -33137,7 +33141,7 @@
 									},
 									"visible": null,
 									"font": "Arial;13;0",
-									"left": 804,
+									"left": 805,
 									"top": 394,
 									"height": 13,
 									"alpha": 1.5707963267948966,
@@ -33158,7 +33162,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 803,
+									"left": 804,
 									"top": 350,
 									"height": 13,
 									"alpha": -1.5707963267948966,
@@ -33177,7 +33181,7 @@
 								"$ref": "AAAAAAFu1frtDPY6r9E="
 							},
 							"lineStyle": 1,
-							"points": "855:372;753.621337890625:371.5343143857759",
+							"points": "855:372;756.122314453125:371.4040771484375",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAFu1gHqavhu1zs="
@@ -33210,7 +33214,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 704,
+									"left": 706,
 									"top": 334,
 									"height": 13,
 									"alpha": 1.5707963267948966,
@@ -33231,7 +33235,7 @@
 									},
 									"visible": null,
 									"font": "Arial;13;0",
-									"left": 710,
+									"left": 712,
 									"top": 320,
 									"height": 13,
 									"alpha": 1.5707963267948966,
@@ -33252,7 +33256,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 693,
+									"left": 695,
 									"top": 361,
 									"height": 13,
 									"alpha": -1.5707963267948966,
@@ -33271,7 +33275,7 @@
 								"$ref": "AAAAAAFu1frn7PYR0tE="
 							},
 							"lineStyle": 1,
-							"points": "669:341;730.621337890625:367.7489536830357",
+							"points": "670:341;733.122314453125:367.9643668241279",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAFu1gLFpfiAJpc="
