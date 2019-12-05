@@ -12,12 +12,12 @@ import java.util.Queue;
 import java.util.LinkedList;
 import java.util.Random;
 
-//ì¼ë°˜ ì§€ì—­ = 0
-//íƒìƒ‰ ì§€ì—­ = 1
-//ê¸°ì¡´ ìœ„í—˜ ì§€ì—­ = 2
-//ì•„ì§ ë°œê²¬ë˜ì§€ ì•Šì€ Color blob = 3
-//ì´ë™í•˜ë‹¤ ë°œê²¬ëœ Color blob = 4
-//ì•„ì§ ë°œê²¬ë˜ì§€ ì•Šì€ ìœ„í—˜ ì§€ì—­ = 5 -> ë°œê²¬ë˜ë©´ 2ë¡œ ë°”ê¾¼ë‹¤.
+//ÀÏ¹İ Áö¿ª = 0
+//Å½»ö Áö¿ª = 1
+//±âÁ¸ À§Çè Áö¿ª = 2
+//¾ÆÁ÷ ¹ß°ßµÇÁö ¾ÊÀº Color blob = 3
+//ÀÌµ¿ÇÏ´Ù ¹ß°ßµÈ Color blob = 4
+//¾ÆÁ÷ ¹ß°ßµÇÁö ¾ÊÀº À§Çè Áö¿ª = 5 -> ¹ß°ßµÇ¸é 2·Î ¹Ù²Û´Ù.
 public class ADD_ON {
    public static void main(String[] args) throws IOException{
       RobotOperationManager rom = new RobotOperationManager();
@@ -25,10 +25,10 @@ public class ADD_ON {
    }
 }
 
-class RobotOperationManager { // ì‹œí€€ìŠ¤ ë‹¤ì´ì–´ê·¸ë¨ì—ì„œ ë³¼ ìˆ˜ ìˆë“¯ì´ ì´ í´ë˜ìŠ¤ê°€ ëª¨ë“ ê±° ë‹¤ ì§€ì‹œ
+class RobotOperationManager { // ½ÃÄö½º ´ÙÀÌ¾î±×·¥¿¡¼­ º¼ ¼ö ÀÖµíÀÌ ÀÌ Å¬·¡½º°¡ ¸ğµç°Å ´Ù Áö½Ã
    
-   MapDataManager mdm = new MapDataManager();	// mdmì—ì„œ map ê°ì²´ , InputMapDataForm ê°ì²´ ë‹¤ ìˆìŒ.
-   SIM sim = new SIM(); //sim ê°ì²´ ìƒì„±
+   MapDataManager mdm = new MapDataManager();	// mdm¿¡¼­ map °´Ã¼ , InputMapDataForm °´Ã¼ ´Ù ÀÖÀ½.
+   SIM sim = new SIM(); //sim °´Ã¼ »ı¼º
    
    
    
@@ -46,60 +46,60 @@ class RobotOperationManager { // ì‹œí€€ìŠ¤ ë‹¤ì´ì–´ê·¸ë¨ì—ì„œ ë³¼ ìˆ˜ ìˆë“¯ì
    
    
    
-   String[] operation_list; // ëª…ë ¹ì–´ í•˜ë‚˜ì”© ë°›ì•„ì˜¨ë‹¤.
+   String[] operation_list; // ¸í·É¾î ÇÏ³ª¾¿ ¹Ş¾Æ¿Â´Ù.
    
    RobotOperationManager() throws IOException {
-      final int SOUTH = 3; // íšŒì „ í•  ë•Œë§ˆë‹¤ 1ì”© ì¤€ë‹¤ê³  ìƒê° , ì—¬ê¸°ì„œ ì„ ì–¸í•´ì¤€ê±´ ëª…ì‹œí•´ì£¼ë ¤ê³ 
+      final int SOUTH = 3; // È¸Àü ÇÒ ¶§¸¶´Ù 1¾¿ ÁØ´Ù°í »ı°¢ , ¿©±â¼­ ¼±¾ğÇØÁØ°Ç ¸í½ÃÇØÁÖ·Á°í
       
       RandomColorBlobCreate();
       RandomHazardCreate();
       MapDataManager.gui.setSnapshot();
-      mdm.SetMapCurrentDir(SOUTH);//ì‹œì‘ ë°©í–¥ì„ ì„¤ì •
+      mdm.SetMapCurrentDir(SOUTH);//½ÃÀÛ ¹æÇâÀ» ¼³Á¤
       
       
-      next_opr=0; //operation_list ì¸ë±ìŠ¤ í•˜ë‚˜ì”© ëŠ˜ë¦¬ë‹¤ê°€ í•œ íƒ€ê²Ÿì§€ì  ë„ì°©í•˜ë©´ ì´ˆê¸°í™”í•˜ëŠ” ë³€ìˆ˜
-      check_step = true; // í•œ íƒ€ê²Ÿì§€ì  ë„ì°©í•œ ê±° ì²´í¬í•´ì£¼ëŠ” ë³€ìˆ˜
+      next_opr=0; //operation_list ÀÎµ¦½º ÇÏ³ª¾¿ ´Ã¸®´Ù°¡ ÇÑ Å¸°ÙÁöÁ¡ µµÂøÇÏ¸é ÃÊ±âÈ­ÇÏ´Â º¯¼ö
+      check_step = true; // ÇÑ Å¸°ÙÁöÁ¡ µµÂøÇÑ °Å Ã¼Å©ÇØÁÖ´Â º¯¼ö
       SetCurrentPosition(mdm.GetMapStartX() , mdm.GetMapStartY());
       
-      sim.TranslateMoveOperation(mdm.GetMapCurrentX(), mdm.GetMapCurrentY(), mdm.GetMapCurrentDirection()); //ë‚˜ì¤‘ì— ì´ê±° í•¨ìˆ˜ ë°”ê¿”ì•¼í•œë‹¤.
-      //simì—ê²Œ í˜„ì¬ ìƒíƒœë¥¼ ì…ë ¥í•´ì¤Œ
+      sim.TranslateMoveOperation(mdm.GetMapCurrentX(), mdm.GetMapCurrentY(), mdm.GetMapCurrentDirection()); //³ªÁß¿¡ ÀÌ°Å ÇÔ¼ö ¹Ù²ã¾ßÇÑ´Ù.
+      //sim¿¡°Ô ÇöÀç »óÅÂ¸¦ ÀÔ·ÂÇØÁÜ
       
-      do {//ì¼ë‹¨ í•œë²ˆì€ ë¬´ì¡°ê±´ pathìƒì„±
+      do {//ÀÏ´Ü ÇÑ¹øÀº ¹«Á¶°Ç path»ı¼º
     	    for(int i=0; i<4; i++) {
     	    	if(mdm.GetMapCurrentX()+dx[i] >= 0 && mdm.GetMapCurrentY()+dy[i] >= 0 && mdm.GetMapCurrentX()+dx[i] < mdm.GetMapRow() && mdm.GetMapCurrentY()+dy[i] < mdm.GetMapCol()) {
     	    		mdm.GetColorBolobSensor(sim, mdm.GetMapCurrentX()+dx[i], mdm.GetMapCurrentY()+dy[i], mdm.GetMapCurrentDirection());
     	    	}
     	    }
             if(mdm.GetMapCurrentX()+dx[mdm.GetMapCurrentDirection()] >= 0 && mdm.GetMapCurrentY()+dy[mdm.GetMapCurrentDirection()] >= 0 && mdm.GetMapCurrentX()+dx[mdm.GetMapCurrentDirection()] < mdm.GetMapRow() && mdm.GetMapCurrentY()+dy[mdm.GetMapCurrentDirection()] < mdm.GetMapCol()) {
-            	if (mdm.GetHazardSensor(sim, mdm.GetMapCurrentX()+dx[mdm.GetMapCurrentDirection()], mdm.GetMapCurrentY()+dy[mdm.GetMapCurrentDirection()], mdm.GetMapCurrentDirection())) { //Hazard point ë°œê²¬ ì‹œ
+            	if (mdm.GetHazardSensor(sim, mdm.GetMapCurrentX()+dx[mdm.GetMapCurrentDirection()], mdm.GetMapCurrentY()+dy[mdm.GetMapCurrentDirection()], mdm.GetMapCurrentDirection())) { //Hazard point ¹ß°ß ½Ã
             		mdm.SetMapFlag(true);
                
             		next_opr = 0;
             	}
             }
-            boolean flag = mdm.CheckRePathFlag(); //í”Œë˜ê·¸ ì²´í¬
-            if (flag || check_step) { // í”Œë˜ê·¸ê°€ 1ì´ê±°ë‚˜ í•œ íƒ€ê²Ÿì§€ì  ë„ì°© ì‹œ
+            boolean flag = mdm.CheckRePathFlag(); //ÇÃ·¡±× Ã¼Å©
+            if (flag || check_step) { // ÇÃ·¡±×°¡ 1ÀÌ°Å³ª ÇÑ Å¸°ÙÁöÁ¡ µµÂø ½Ã
             	map_temp = mdm.GetMap();
             
-            	initalizeVistPath();
+            	initializeVistPath();
 
             	MakePath();
-            	check_step = false; //ê¸°ë³¸ì€ false
+            	check_step = false; //±âº»Àº false
             	mdm.SetMapFlag(false);
             	next_opr = 0;
             }
             
             
-            int tmpx = mdm.GetMapSearchX()[mdm.GetMapStep()]; // në²ˆì§¸ íƒ€ê²Ÿì§€ì 
+            int tmpx = mdm.GetMapSearchX()[mdm.GetMapStep()]; // n¹øÂ° Å¸°ÙÁöÁ¡
             int tmpy = mdm.GetMapSearchY()[mdm.GetMapStep()];
-            operation_list = answer_pn[mdm.GetMapStep()][tmpx][tmpy].split("->"); //në²ˆì§¸ íƒ€ê²Ÿì§€ì ì— ì €ì¥ëœ ê²½ë¡œë¥¼ "->"ì„ ê¸°ì¤€ìœ¼ë¡œ split
+            operation_list = answer_pn[mdm.GetMapStep()][tmpx][tmpy].split("->"); //n¹øÂ° Å¸°ÙÁöÁ¡¿¡ ÀúÀåµÈ °æ·Î¸¦ "->"À» ±âÁØÀ¸·Î split
             System.out.println(next_opr + " , " + operation_list[next_opr]);
             
             
             
             
-            	sim.Move(operation_list[next_opr]); //ëª…ë ¹ì–´ í•˜ë‚˜ì”© ë°›ì•„ì™€ì„œ simì—ê²Œ ëª…ë ¹ì–´ ì „ë‹¬
-            	sim = sim.Get(); //simì˜ ì›€ì§ì¸ ì •ë³´ë¥¼ ë°›ì•„ì˜¨ë‹¤.
+            	sim.Move(operation_list[next_opr]); //¸í·É¾î ÇÏ³ª¾¿ ¹Ş¾Æ¿Í¼­ sim¿¡°Ô ¸í·É¾î Àü´Ş
+            	sim = sim.Get(); //simÀÇ ¿òÁ÷ÀÎ Á¤º¸¸¦ ¹Ş¾Æ¿Â´Ù.
             	int tempx1 = mdm.GetMapCurrentX();
             	int tempy1 = mdm.GetMapCurrentY();
             	SetCurrentPosition(sim.GetCurrentX() , sim.GetCurrentY());
@@ -108,8 +108,8 @@ class RobotOperationManager { // ì‹œí€€ìŠ¤ ë‹¤ì´ì–´ê·¸ë¨ì—ì„œ ë³¼ ìˆ˜ ìˆë“¯ì
             		int tempx2 = mdm.GetMapCurrentX();
                 	int tempy2 = mdm.GetMapCurrentY();
                     if (tempx2 != tmpnode.x || tempy2 != tmpnode.y) {
-                    System.out.println("ì˜ˆìƒí•œ ìœ„ì¹˜ì™€ ë‹¤ë¦…ë‹ˆë‹¤.");
-                    System.out.println("ì˜ˆìƒìœ„ì¹˜ : " + tempx2 + "," + tempy2 + "ì‹¤ì œ ìœ„ì¹˜ : " + sim.GetCurrentX() + "," + sim.GetCurrentY());
+                    System.out.println("¿¹»óÇÑ À§Ä¡¿Í ´Ù¸¨´Ï´Ù.");
+                    System.out.println("¿¹»óÀ§Ä¡ : " + tempx2 + "," + tempy2 + "½ÇÁ¦ À§Ä¡ : " + sim.GetCurrentX() + "," + sim.GetCurrentY());
                     MapDataManager.GUIMapSetPrint(MapDataManager.gui.getSnapshot2Point(tempx1, tempy1), tempx1, tempy1);
                     SetCurrentPosition(sim.GetCurrentX() , sim.GetCurrentY());
                     MapDataManager.GUIMapSetPrint("ROBOT", mdm.GetMapCurrentX(), mdm.GetMapCurrentY());
@@ -128,19 +128,19 @@ class RobotOperationManager { // ì‹œí€€ìŠ¤ ë‹¤ì´ì–´ê·¸ë¨ì—ì„œ ë³¼ ìˆ˜ ìˆë“¯ì
             	}
             	MapDataManager.gui.setSnapshot2();;
             	SetCurrentPosition(sim.GetCurrentX() , sim.GetCurrentY());
-            mdm.SetMapCurrentDir(sim.GetCurrentDir());//í˜„ì¬ ë°©í–¥ ë¦¬í„´
+            mdm.SetMapCurrentDir(sim.GetCurrentDir());//ÇöÀç ¹æÇâ ¸®ÅÏ
             
             System.out.println(mdm.GetMapCurrentX() + " , " + mdm.GetMapCurrentY() + " , " + mdm.GetMapCurrentDirection());
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////
             
-            //////////////////////////////////////////////////////////////////////////////////////////////////////////// ì˜ ë ëŸ°ì§€ ì˜ë¬¸ì´ë‹¤.
-            next_opr++; //ì¸ì++ í•˜ê³  (ë‹¤ìŒ ëª…ë ¹ì–´ ë°›ëŠ”ë‹¤)
+            //////////////////////////////////////////////////////////////////////////////////////////////////////////// Àß µÉ·±Áö ÀÇ¹®ÀÌ´Ù.
+            next_opr++; //ÀÎÀÚ++ ÇÏ°í (´ÙÀ½ ¸í·É¾î ¹Ş´Â´Ù)
             
             if (RobotOnGoal(tmpx, tmpy)) {mdm.SetMapStep(mdm.GetMapStep()+1); check_step = true; next_opr = 0;}
-            //ë§Œì•½ në²ˆì§¸ íƒ€ê²Ÿì§€ì  ë„ì°© ì‹œ step++, check_stepì„ true, next_opr 0ìœ¼ë¡œ ì´ˆê¸°í™”
+            //¸¸¾à n¹øÂ° Å¸°ÙÁöÁ¡ µµÂø ½Ã step++, check_stepÀ» true, next_opr 0À¸·Î ÃÊ±âÈ­
             
    
-      }while(mdm.GetMapStep() != mdm.GetMapSearchCount()); // stepì´ íƒìƒ‰ì§€ì  ê°œìˆ˜ì™€ ê°™ì„ ë•Œê¹Œì§€
+      }while(mdm.GetMapStep() != mdm.GetMapSearchCount()); // stepÀÌ Å½»öÁöÁ¡ °³¼ö¿Í °°À» ¶§±îÁö
    }
    
    
@@ -155,17 +155,17 @@ class RobotOperationManager { // ì‹œí€€ìŠ¤ ë‹¤ì´ì–´ê·¸ë¨ì—ì„œ ë³¼ ìˆ˜ ìˆë“¯ì
    
    void MakePath() {
    	PathManager pm = new PathManager(mdm.GetMapRow(), mdm.GetMapCol(), map_temp, mdm.GetMapVisit(), answer_pn, mdm.GetMapStep());
-       //ìƒˆë¡œìš´ pathmanager ê°ì²´ ìƒì„±, ë°”ë€ŒëŠ” ê±´ visit, path, stepë¿ -> ëª¨ë‘ í•œ íƒ€ê²Ÿì§€ì  ë„ì°© ì‹œ ë‹¤ìŒê±¸ë¡œ ë°”ë€œ
+       //»õ·Î¿î pathmanager °´Ã¼ »ı¼º, ¹Ù²î´Â °Ç visit, path, step»Ó -> ¸ğµÎ ÇÑ Å¸°ÙÁöÁ¡ µµÂø ½Ã ´ÙÀ½°É·Î ¹Ù²ñ
        pm.CalculateOptimalPath(mdm.GetMapCurrentX(), mdm.GetMapCurrentY(), mdm.GetMapCurrentDirection()); 
-       // ì£¼ì–´ì§„ Pathmanager ì •ë³´ì™€ ë˜ ì£¼ì–´ì§€ëŠ” í˜„ì¬ ìœ„ì¹˜ ë°, ë°©í–¥ìœ¼ë¡œ ê²½ë¡œ ê³„ì‚°
-       answer_pn = pm.GetPath(); //ê³„ì‚°ëœ ê²½ë¡œ ê°€ì ¸ì˜´
+       // ÁÖ¾îÁø Pathmanager Á¤º¸¿Í ¶Ç ÁÖ¾îÁö´Â ÇöÀç À§Ä¡ ¹×, ¹æÇâÀ¸·Î °æ·Î °è»ê
+       answer_pn = pm.GetPath(); //°è»êµÈ °æ·Î °¡Á®¿È
        
        
    }
    
 
    
-   void initalizeVistPath() {
+   void initializeVistPath() {
 	   for (int i=0; i<mdm.GetMapRow(); i++) {
            for (int j=0; j<mdm.GetMapCol(); j++) {
                   
@@ -182,26 +182,26 @@ class RobotOperationManager { // ì‹œí€€ìŠ¤ ë‹¤ì´ì–´ê·¸ë¨ì—ì„œ ë³¼ ìˆ˜ ìˆë“¯ì
    
    
    void RandomColorBlobCreate() {
-	  	  int Color_cnt=1; // ëœë¤ìœ¼ë¡œ ìƒê¸°ëŠ” Color blob ê°œìˆ˜ -> 3ê°œ ìƒì„±
-	        while(Color_cnt <= 3) { //ìœ„í—˜ì§€ì—­ì´ë‚˜, íƒ€ê²Ÿì§€ì ì€ ë¹¼ê³  ìƒì„±
+	  	  int Color_cnt=1; // ·£´ıÀ¸·Î »ı±â´Â Color blob °³¼ö -> 3°³ »ı¼º
+	        while(Color_cnt <= 3) { //À§ÇèÁö¿ªÀÌ³ª, Å¸°ÙÁöÁ¡Àº »©°í »ı¼º
 	           double randomvalue = Math.random();
 	           double randomvalue2 = Math.random();
-	           if (mdm.GetMapmap((int) (randomvalue*7),(int) (randomvalue2*7)) == 0) {
-	        	   mdm.SetMapmap((int) (randomvalue*7),(int) (randomvalue2*7), 3);
+	           if (mdm.GetMapPointData((int) (randomvalue*7),(int) (randomvalue2*7)) == 0) {
+	        	   mdm.SetMapPointData((int) (randomvalue*7),(int) (randomvalue2*7), 3);
 	              MapDataManager.GUIMapSetPrint("NEWCOLORBLOB", (int) (randomvalue*7), (int) (randomvalue2*7));
 	              Color_cnt++;
 	           }
 	        } 
 	    }
 	void RandomHazardCreate() {
-		int Hazard_cnt=1; //ìƒˆë¡œ ìƒê¸°ëŠ” ìœ„í—˜ì§€ì—­ ê°œìˆ˜ -> 1ê°œ ìƒì„±
-	      while (Hazard_cnt <= 5) { //ìƒˆë¡œìƒê¸¸ ë•Œ ê¸°ì¡´ ìœ„í—˜ì§€ì—­, íƒ€ê²Ÿì§€ì , ì‹œì‘ì§€ì ì€ ë¹¼ê³  ìƒì„±. í•˜ë‹¤ë³´ë‹ˆ ì–‘ì˜†ì´ ë‹¤ë§‰ì—¬ ëª»ê°€ëŠ” ê²½ìš°ê°€ ìƒê²¨ 
-	         //ì¼ë‹¨ì€ ìƒì„±ê°œìˆ˜ë¥¼ í•˜ë‚˜ë¡œ í•¨
+		int Hazard_cnt=1; //»õ·Î »ı±â´Â À§ÇèÁö¿ª °³¼ö -> 1°³ »ı¼º
+	      while (Hazard_cnt <= 5) { //»õ·Î»ı±æ ¶§ ±âÁ¸ À§ÇèÁö¿ª, Å¸°ÙÁöÁ¡, ½ÃÀÛÁöÁ¡Àº »©°í »ı¼º. ÇÏ´Ùº¸´Ï ¾ç¿·ÀÌ ´Ù¸·¿© ¸ø°¡´Â °æ¿ì°¡ »ı°Ü 
+	         //ÀÏ´ÜÀº »ı¼º°³¼ö¸¦ ÇÏ³ª·Î ÇÔ
 	         double randomvalue = Math.random();
 	         double randomvalue2 = Math.random();
-	         if (mdm.GetMapmap((int) (randomvalue*7),(int) (randomvalue2*7)) == 0) {
+	         if (mdm.GetMapPointData((int) (randomvalue*7),(int) (randomvalue2*7)) == 0) {
 	            if(mdm.start_x != (int)(randomvalue*7) || mdm.start_y != (int)(randomvalue2*7)) {
-	            	mdm.SetMapmap((int) (randomvalue*7),(int) (randomvalue2*7), 5);
+	            	mdm.SetMapPointData((int) (randomvalue*7),(int) (randomvalue2*7), 5);
 	            MapDataManager.GUIMapSetPrint("NEWHAZARD", (int) (randomvalue*7), (int) (randomvalue2*7));
 	            Hazard_cnt++;
 	            }
@@ -217,7 +217,7 @@ class RobotOperationManager { // ì‹œí€€ìŠ¤ ë‹¤ì´ì–´ê·¸ë¨ì—ì„œ ë³¼ ìˆ˜ ìˆë“¯ì
 	   }
 }
 
-class MapDataManager { //ë§µì—ê²Œ ì „ë‹¬í•œ ë³€ìˆ˜ë“¤ ì €ì¥, ëŒ€ë¶€ë¶„ ì´ë¦„ìœ¼ë¡œ ì—­í•  ì¶”ì • ê°€ëŠ¥
+class MapDataManager { //¸Ê¿¡°Ô Àü´ŞÇÑ º¯¼öµé ÀúÀå, ´ëºÎºĞ ÀÌ¸§À¸·Î ¿ªÇÒ ÃßÁ¤ °¡´É
 	   int row;
 	   int col;
 	   int start_x;
@@ -226,7 +226,7 @@ class MapDataManager { //ë§µì—ê²Œ ì „ë‹¬í•œ ë³€ìˆ˜ë“¤ ì €ì¥, ëŒ€ë¶€ë¶„ ì´ë¦„ì
 	   int hazard_cnt;
 
 	   int[][] map;
-	   boolean[][][] visit; //ì¤‘ìš” -> 3ì°¨ì›ë°°ì—´ë¡œ ì²˜ìŒì€ stepë³„ë¡œ, ì¦‰ íƒìƒ‰ì§€ì  ê°œìˆ˜ë§Œí¼ ìƒì„±, ë‘ ì„¸ë²ˆì§¸ëŠ” ì¢Œí‘œ
+	   boolean[][][] visit; //Áß¿ä -> 3Â÷¿ø¹è¿­·Î Ã³À½Àº stepº°·Î, Áï Å½»öÁöÁ¡ °³¼ö¸¸Å­ »ı¼º, µÎ ¼¼¹øÂ°´Â ÁÂÇ¥
 	   
 	   
 	   int[] search_x;
@@ -235,7 +235,7 @@ class MapDataManager { //ë§µì—ê²Œ ì „ë‹¬í•œ ë³€ìˆ˜ë“¤ ì €ì¥, ëŒ€ë¶€ë¶„ ì´ë¦„ì
 	   int[] hazard_y;
 
 	   
-	   Map mp = new Map(); //map ê°ì²´ ìƒì„± í›„ ì „ë‹¬.
+	   Map mp = new Map(); //map °´Ã¼ »ı¼º ÈÄ Àü´Ş.
 	   HazardSensorManager hsm = new HazardSensorManager();
 	   ColorBlobSensorManager cbsm = new ColorBlobSensorManager();
 	   PositionSensorManager psm = new PositionSensorManager();
@@ -281,13 +281,13 @@ class MapDataManager { //ë§µì—ê²Œ ì „ë‹¬í•œ ë³€ìˆ˜ë“¤ ì €ì¥, ëŒ€ë¶€ë¶„ ì´ë¦„ì
 		      map = new int[row+1][col+1];
 		      visit = new boolean[search_cnt][row+1][col+1];
 		      
-		      //map ì´ˆê¸°í™”
+		      //map ÃÊ±âÈ­
 		      for (int i=0; i<row; i++) {
 		         for (int j=0; j<col; j++) {
-		            map[i][j] = 0;    //ì¼ë°˜ ì§€ì—­ = 0
+		            map[i][j] = 0;    //ÀÏ¹İ Áö¿ª = 0
 		         }
 		      } 
-		      // visit, path ì´ˆê¸°í™”
+		      // visit, path ÃÊ±âÈ­
 		      for (int k=0; k<search_cnt; k++) {
 		         for (int i=0; i<row; i++) {
 		            for (int j=0; j<col; j++) {
@@ -297,13 +297,13 @@ class MapDataManager { //ë§µì—ê²Œ ì „ë‹¬í•œ ë³€ìˆ˜ë“¤ ì €ì¥, ëŒ€ë¶€ë¶„ ì´ë¦„ì
 		            }
 		         }
 		      }
-		      // map í–‰ë ¬ì— íƒìƒ‰ ì§€ì—­ í‘œì‹œ
+		      // map Çà·Ä¿¡ Å½»ö Áö¿ª Ç¥½Ã
 		      for (int i=0; i<this.search_cnt; i++) {
-		         this.map[search_x[i]][search_y[i]] = 1; // íƒìƒ‰ ì§€ì—­ = 1
+		         this.map[search_x[i]][search_y[i]] = 1; // Å½»ö Áö¿ª = 1
 		      }
-		      // map í–‰ë ¬ì— ìœ„í—˜ ì§€ì—­ í‘œì‹œ
+		      // map Çà·Ä¿¡ À§Çè Áö¿ª Ç¥½Ã
 		      for (int i=0; i<this.hazard_cnt; i++) {
-		         this.map[hazard_x[i]][hazard_y[i]] = 2;  // ìœ„í—˜ ì§€ì—­ = 2
+		         this.map[hazard_x[i]][hazard_y[i]] = 2;  // À§Çè Áö¿ª = 2
 		      }
 	   }
 	   
@@ -343,7 +343,7 @@ class MapDataManager { //ë§µì—ê²Œ ì „ë‹¬í•œ ë³€ìˆ˜ë“¤ ì €ì¥, ëŒ€ë¶€ë¶„ ì´ë¦„ì
 	   }
 	   
 	   
-	   boolean CheckRePathFlag() { //í”Œë˜ê·¸ ì²´í¬ í•¨ìˆ˜
+	   boolean CheckRePathFlag() { //ÇÃ·¡±× Ã¼Å© ÇÔ¼ö
 	      boolean flag = mp.GetRePathFlag();
 	      return flag;
 	   }
@@ -351,8 +351,8 @@ class MapDataManager { //ë§µì—ê²Œ ì „ë‹¬í•œ ë³€ìˆ˜ë“¤ ì €ì¥, ëŒ€ë¶€ë¶„ ì´ë¦„ì
 	   int[][] GetMap() {
 	      return mp.GetMap();
 	   }
-	   int GetMapmap(int x, int y) {
-		   return mp.Getmap(x, y);
+	   int GetMapPointData(int x, int y) {
+		   return mp.Getmapinf(x, y);
 	   }
 	   int GetMapCurrentDirection() {
 		   return mp.GetcurrentDir();
@@ -393,16 +393,16 @@ class MapDataManager { //ë§µì—ê²Œ ì „ë‹¬í•œ ë³€ìˆ˜ë“¤ ì €ì¥, ëŒ€ë¶€ë¶„ ì´ë¦„ì
 		   return mp.GetSearchCount();
 	   }
 	   boolean GetColorBolobSensor(SIM sim, int x, int y, int dir) {
-		   if(cbsm.GetSensorValue(sim, x, y, dir, mp.Getmap(x, y))) {
-			   mp.Setmap(x, y, 4);
+		   if(cbsm.GetSensorValue(sim, x, y, dir, mp.Getmapinf(x, y))) {
+			   mp.Setmapinf(x, y, 4);
 			   GUIMapSetPrint("SEENCOLORBLOB", x, y);
 			   return true;
 		   }
 		   return false;
 	   }
 	   boolean GetHazardSensor(SIM sim,int x, int y, int dir) {
-		   if(hsm.GetSensorValue(sim, x, y, dir, mp.Getmap(x, y))) {
-			   mp.Setmap(x, y, 2);
+		   if(hsm.GetSensorValue(sim, x, y, dir, mp.Getmapinf(x, y))) {
+			   mp.Setmapinf(x, y, 2);
 			   GUIMapSetPrint("SEENHAZARD", x, y);
 			   return true;
 		   }
@@ -436,8 +436,8 @@ class MapDataManager { //ë§µì—ê²Œ ì „ë‹¬í•œ ë³€ìˆ˜ë“¤ ì €ì¥, ëŒ€ë¶€ë¶„ ì´ë¦„ì
 	   void SetMapCurrentY(int y) {
 		   mp.SetCurrentY(y);
 	   }
-	   void SetMapmap(int x, int y, int inf) {
-		   mp.Setmap(x,y, inf);
+	   void SetMapPointData(int x, int y, int inf) {
+		   mp.Setmapinf(x,y, inf);
 	   }
 	   
 	   
@@ -447,13 +447,13 @@ class PathManager {
       final int SOUTH = 3;
       final int NORTH = 1;
       final int EAST = 2;
-      final int WEST = 0; //ê° ë°©í–¥ì„ ìˆ«ìë¡œ ì§€ì •
+      final int WEST = 0; //°¢ ¹æÇâÀ» ¼ıÀÚ·Î ÁöÁ¤
       
-      PathNode pn;
+      Path pn;
       
-      int[] dx = {0, -1, 0, 1}; // iê°€ 1,3 ì¼ ì‹œ xì¶• ì›€ì§ì„
-      int[] dy = {-1, 0, 1, 0}; // iê°€ 0,2 ì¼ ì‹œ yì¶• ì›€ì§ì„
-      int[] direction = {0, 1, 2, 3}; // íšŒì „í•  ë•Œë§ˆë‹¤ 1ì”© ëºŒ.
+      int[] dx = {0, -1, 0, 1}; // i°¡ 1,3 ÀÏ ½Ã xÃà ¿òÁ÷ÀÓ
+      int[] dy = {-1, 0, 1, 0}; // i°¡ 0,2 ÀÏ ½Ã yÃà ¿òÁ÷ÀÓ
+      int[] direction = {0, 1, 2, 3}; // È¸ÀüÇÒ ¶§¸¶´Ù 1¾¿ »­.
       
       int row;
       int col;
@@ -471,24 +471,24 @@ class PathManager {
          this.step = step;
       }
 
-      void CalculateOptimalPath(int x, int y, int my_dir) { //ê²½ë¡œ ê³„ì‚° í•¨ìˆ˜
+      void CalculateOptimalPath(int x, int y, int my_dir) { //°æ·Î °è»ê ÇÔ¼ö
          
-         pn = new PathNode(path);    //ì´ˆê¸°í™”
-         Queue<Node> q = new LinkedList<Node>(); // í ìƒì„±
-         int my_direc = my_dir; //í˜„ì¬ ë°©í–¥ ì €ì¥
+         pn = new Path(path);    //ÃÊ±âÈ­
+         Queue<Node> q = new LinkedList<Node>(); // Å¥ »ı¼º
+         int my_direc = my_dir; //ÇöÀç ¹æÇâ ÀúÀå
          
-         q.add(new Node(x, y, my_direc)); //íì— ì…ë ¥ë°›ì€ ì •ë³´ë¡œ ìƒì„±ëœ ë…¸ë“œ ì €ì¥
-         int tmp_dir=0; //ê°€ìƒìœ¼ë¡œ ì›€ì§ì´ê³  ì‹¶ì€ ì¢Œí‘œì˜ ë°©í–¥ ì €ì¥ ë³€ìˆ˜
+         q.add(new Node(x, y, my_direc)); //Å¥¿¡ ÀÔ·Â¹ŞÀº Á¤º¸·Î »ı¼ºµÈ ³ëµå ÀúÀå
+         int tmp_dir=0; //°¡»óÀ¸·Î ¿òÁ÷ÀÌ°í ½ÍÀº ÁÂÇ¥ÀÇ ¹æÇâ ÀúÀå º¯¼ö
          while (!q.isEmpty()) {
-            Node n = q.poll(); // íì—ì„œ í•˜ë‚˜ êº¼ë‚´ì„œ
+            Node n = q.poll(); // Å¥¿¡¼­ ÇÏ³ª ²¨³»¼­
             
             
-            for (int i=0; i<4; i++) { // ë™ì„œë‚¨ë¶ ë‹¤ ê°€ë³¸ë‹¤.
+            for (int i=0; i<4; i++) { // µ¿¼­³²ºÏ ´Ù °¡º»´Ù.
                my_direc = n.dir;
                int nx = n.x + dx[i];
                int ny = n.y + dy[i];
                
-               if (i==3) { // ê°€ê³  ì‹¶ì€ ì¢Œí‘œì˜ ë°©í–¥ ì„¤ì •
+               if (i==3) { // °¡°í ½ÍÀº ÁÂÇ¥ÀÇ ¹æÇâ ¼³Á¤
                   tmp_dir = SOUTH; //SOUTH
                }
                else if(i==1) {
@@ -503,28 +503,28 @@ class PathManager {
                if (nx < 0 || ny < 0 || nx >= row || ny >= col) {
                   continue;
                }
-               // ê°€ê³  ì‹¶ì€ ì¢Œí‘œê°€ ë§µ í¬ê¸°ë¥¼ ë„˜ì–´ ë²„ë¦¬ë©´ ê±´ë„ˆë›°ê¸°
+               // °¡°í ½ÍÀº ÁÂÇ¥°¡ ¸Ê Å©±â¸¦ ³Ñ¾î ¹ö¸®¸é °Ç³Ê¶Ù±â
                
                if (visit[step][nx][ny] || map[nx][ny] == 2) {
                   continue;
                }
-                //ì´ë¯¸ ë°©ë¬¸í–ˆë˜ ì ì´ê±°ë‚˜ ìœ„í—˜ì§€ì—­ì´ë©´ ê±´ë„ˆë›°ê¸°
+                //ÀÌ¹Ì ¹æ¹®Çß´ø Á¡ÀÌ°Å³ª À§ÇèÁö¿ªÀÌ¸é °Ç³Ê¶Ù±â
                
-                
+               pn.SetPathPoint(step, nx, ny, pn.GetPathPoint(step, n.x, n.y)); 
                pn.path[step][nx][ny] += pn.path[step][n.x][n.y];
-               //ê°€ê³  ì‹¶ì€ ì¢Œí‘œì— í˜„ì¬ê¹Œì§€ ì˜¤ëŠ”ë° ê±¸ë¦° ê²½ë¡œ ì €ì¥ í›„
+               //°¡°í ½ÍÀº ÁÂÇ¥¿¡ ÇöÀç±îÁö ¿À´Âµ¥ °É¸° °æ·Î ÀúÀå ÈÄ
                
                while(my_direc != tmp_dir) {
                   pn.path[step][nx][ny] += "RIGHT->";
                   if(my_direc == SOUTH) my_direc = -1;
                   my_direc = direction[my_direc+1];
-               } // ê²½ë¡œì—  ë§ê²Œ íšŒì „, ëª¨ë‘ ì €ì¥
+               } // °æ·Î¿¡  ¸Â°Ô È¸Àü, ¸ğµÎ ÀúÀå
                 
+               pn.SetPathPoint(step, nx, ny, "MOVE->"); 
+               
+               // 1 ¿òÁ÷ÀÌ´Â °Í±îÁö ÃÖÁ¾ ÀúÀå
                 
-               pn.path[step][nx][ny] += "MOVE->";
-               // 1 ì›€ì§ì´ëŠ” ê²ƒê¹Œì§€ ìµœì¢… ì €ì¥
-                
-               q.add(new Node(nx, ny, my_direc)); //ê·¸ ë…¸ë“œë¥¼ ë‹¤ì‹œ íì— ì‚½ì…
+               q.add(new Node(nx, ny, my_direc)); //±× ³ëµå¸¦ ´Ù½Ã Å¥¿¡ »ğÀÔ
             
                 //pn.path[step][nx][ny] = pn.path[step][n.x][n.y] + "(" + nx + " , " + ny + ")";
                
@@ -538,19 +538,25 @@ class PathManager {
       }
 
 }
-class PathNode {
+class Path {
    
    String[][][] path;
-   PathNode (String[][][] path){
+   Path (String[][][] path){
      
       this.path = path;
    }
    String[][][] getPath() {
 	   return this.path;
    }
+   void SetPathPoint(int step, int x, int y, String s) {
+	   this.path[step][x][y] += s;
+   }
+   String GetPathPoint(int step, int x, int y) {
+	   return this.path[step][x][y];
+   }
 }
 
-class Node { //ì´ê±´ ë‚˜ì¤‘ì—ë¼ë„ ì—†ì• ì•¼í•  í´ë˜ìŠ¤, ì•Œì•„ì„œ ê³ ì³ë´„
+class Node { //ÀÌ°Ç ³ªÁß¿¡¶óµµ ¾ø¾Ö¾ßÇÒ Å¬·¡½º, ¾Ë¾Æ¼­ °íÃÄº½
    int x;
    int y;
    int dir;
@@ -561,7 +567,7 @@ class Node { //ì´ê±´ ë‚˜ì¤‘ì—ë¼ë„ ì—†ì• ì•¼í•  í´ë˜ìŠ¤, ì•Œì•„ì„œ ê³ ì³ë´
    }
 }
 
-class SensorNode { //ì•ˆì“´ë‹¤. ë‚˜ì¤‘ì— ì—†ì•¤ë‹¤
+class SensorNode { //¾È¾´´Ù. ³ªÁß¿¡ ¾ø¾Ø´Ù
    int x;
    int y;
    
@@ -599,7 +605,7 @@ class PositionSensorManager extends SensorManager{
    }
 }
 
-class SIM { //SIM í´ë˜ìŠ¤. 
+class SIM { //SIM Å¬·¡½º. 
    final int SOUTH = 3;
    final int NORTH = 1;
    final int EAST = 2;
@@ -710,7 +716,7 @@ class SIM { //SIM í´ë˜ìŠ¤.
 
 
 
-class InputMapDataForm //ì…ë ¥ í¼ í´ë˜ìŠ¤
+class InputMapDataForm //ÀÔ·Â Æû Å¬·¡½º
 {
    int id;
    int row;
@@ -732,19 +738,60 @@ class InputMapDataForm //ì…ë ¥ í¼ í´ë˜ìŠ¤
    }
    
    void EnterID() {
-      System.out.print("IDë¥¼ ì…ë ¥í•˜ì„¸ìš” : ");
+      System.out.print("ID¸¦ ÀÔ·ÂÇÏ¼¼¿ä : ");
       
    }
    
    boolean Verify() {
       if (id == 1111) {
-         System.out.println("í™•ì¸ë˜ì—ˆìŠµë‹ˆë‹¤!");
+         System.out.println("È®ÀÎµÇ¾ú½À´Ï´Ù!");
          return true;
       }
       else {
-         System.out.println("ì—†ëŠ” ë²ˆí˜¸ì…ë‹ˆë‹¤");
+         System.out.println("¾ø´Â ¹øÈ£ÀÔ´Ï´Ù");
          return false;
       }
+   }
+   
+   void EnterMapData() throws IOException {
+	   str = new StringTokenizer(bfr.readLine());
+	      this.row = Integer.valueOf(str.nextToken());
+	      this.col = Integer.valueOf(str.nextToken());
+	      this.start_x = Integer.valueOf(str.nextToken());
+	      this.start_y = Integer.valueOf(str.nextToken()); // Map Å©±â, ½ÃÀÛ º¤ÅÍ ÀÔ·Â
+	   
+	      str = new StringTokenizer(bfr.readLine());
+	      this.search_cnt = Integer.valueOf(str.nextToken()); // Å½»ö À§Ä¡ º¤ÅÍ ¼ö ÀÔ·Â
+	   
+	      str = new StringTokenizer(bfr.readLine());
+	      this.hazard_cnt = Integer.valueOf(str.nextToken()); // À§Çè À§Ä¡ º¤ÅÍ ¼ö ÀÔ·Â
+	      
+	      // visit, path ÃÊ±âÈ­
+	      search_x = new int[search_cnt];
+	      search_y = new int[search_cnt];
+	   
+	      for (int i=0; i<this.search_cnt; i++) {
+	         this.str = new StringTokenizer(bfr.readLine());
+	         int tempx = Integer.valueOf(str.nextToken());
+	         search_x[i] = tempx;
+	         int tempy = Integer.valueOf(str.nextToken());
+	         search_y[i] = tempy;
+	         //this.map[tempx][tempy] = 1; // Å½»ö Áö¿ª = 1
+	         
+	      }
+	      //map¿¡ Å½»ö Áö¿ª Ç¥½Ã
+	      hazard_x = new int[hazard_cnt];
+	      hazard_y = new int[hazard_cnt];
+	      
+	      for (int i=0; i<this.hazard_cnt; i++) {
+	         str = new StringTokenizer(bfr.readLine());
+	         int tempx = Integer.valueOf(str.nextToken());
+	         hazard_x[i] = tempx;
+	         int tempy = Integer.valueOf(str.nextToken());
+	         hazard_y[i] = tempy;
+	         //this.map[tempx][tempy] = 2;  // À§Çè Áö¿ª = 2
+	      }
+	      //map¿¡ À§Çè Áö¿ª Ç¥½Ã
    }
    
    InputMapDataForm() throws IOException{
@@ -758,44 +805,7 @@ class InputMapDataForm //ì…ë ¥ í¼ í´ë˜ìŠ¤
          
       }while(Verify()!=true);
    //////////////////////////////////////////////////////////////////////////////////Input Data Form/////////////////////////////////////////////////
-      str = new StringTokenizer(bfr.readLine());
-      this.row = Integer.valueOf(str.nextToken());
-      this.col = Integer.valueOf(str.nextToken());
-      this.start_x = Integer.valueOf(str.nextToken());
-      this.start_y = Integer.valueOf(str.nextToken()); // Map í¬ê¸°, ì‹œì‘ ë²¡í„° ì…ë ¥
-   
-      str = new StringTokenizer(bfr.readLine());
-      this.search_cnt = Integer.valueOf(str.nextToken()); // íƒìƒ‰ ìœ„ì¹˜ ë²¡í„° ìˆ˜ ì…ë ¥
-   
-      str = new StringTokenizer(bfr.readLine());
-      this.hazard_cnt = Integer.valueOf(str.nextToken()); // ìœ„í—˜ ìœ„ì¹˜ ë²¡í„° ìˆ˜ ì…ë ¥
-      
-      // visit, path ì´ˆê¸°í™”
-      search_x = new int[search_cnt];
-      search_y = new int[search_cnt];
-   
-      for (int i=0; i<this.search_cnt; i++) {
-         this.str = new StringTokenizer(bfr.readLine());
-         int tempx = Integer.valueOf(str.nextToken());
-         search_x[i] = tempx;
-         int tempy = Integer.valueOf(str.nextToken());
-         search_y[i] = tempy;
-         //this.map[tempx][tempy] = 1; // íƒìƒ‰ ì§€ì—­ = 1
-         
-      }
-      //mapì— íƒìƒ‰ ì§€ì—­ í‘œì‹œ
-      hazard_x = new int[hazard_cnt];
-      hazard_y = new int[hazard_cnt];
-      
-      for (int i=0; i<this.hazard_cnt; i++) {
-         str = new StringTokenizer(bfr.readLine());
-         int tempx = Integer.valueOf(str.nextToken());
-         hazard_x[i] = tempx;
-         int tempy = Integer.valueOf(str.nextToken());
-         hazard_y[i] = tempy;
-         //this.map[tempx][tempy] = 2;  // ìœ„í—˜ ì§€ì—­ = 2
-      }
-      //mapì— ìœ„í—˜ ì§€ì—­ í‘œì‹œ
+      EnterMapData();
    
    }
    
@@ -825,33 +835,31 @@ class Map{
    
    
    void Save(int row, int col, int start_x, int start_y, int[][] map, boolean[][][] visit, int search_cnt, int hazard_cnt, int current_x, int current_y, int current_direction, int[] search_x, int[] search_y, int[] hazard_x, int[] hazard_y) {
-      SetMap(row, col, start_x, start_y, map, visit, search_cnt, hazard_cnt, current_x, current_y, current_direction, search_x, search_y, hazard_x, hazard_y);
+	   this.mapsize_row = row;
+	      this.mapsize_col = col;
+	      this.start_x = start_x;
+	      this.start_y = start_y;
+	      this.visit = visit;
+	      
+	      this.search_cnt = search_cnt;
+	      this.hazard_cnt = hazard_cnt;
+	      this.current_direction = current_direction;
+	      this.current_x = current_x;
+	      this.current_y = current_y;
+	      this.search_x = search_x;
+	      this.search_y = search_y;
+	      this.hazard_x = hazard_x;
+	      this.hazard_y = hazard_y;
+	      this.map = map;
    }
-   public int Getmap(int x, int y) {
+   public int Getmapinf(int x, int y) {
 	  return this.map[x][y];
    }
 
-public void Setmap(int x, int y, int inf) {
+   public void Setmapinf(int x, int y, int inf) {
 	   this.map[x][y] = inf;
    }
-void SetMap(int row, int col, int start_x, int start_y, int[][] map, boolean[][][] visit,  int search_cnt, int hazard_cnt, int current_x, int current_y, int current_direction, int[] search_x, int[] search_y, int[] hazard_x, int[] hazard_y) {
-      this.mapsize_row = row;
-      this.mapsize_col = col;
-      this.start_x = start_x;
-      this.start_y = start_y;
-      this.visit = visit;
-      
-      this.search_cnt = search_cnt;
-      this.hazard_cnt = hazard_cnt;
-      this.current_direction = current_direction;
-      this.current_x = current_x;
-      this.current_y = current_y;
-      this.search_x = search_x;
-      this.search_y = search_y;
-      this.hazard_x = hazard_x;
-      this.hazard_y = hazard_y;
-      this.map = map;
-   }
+
    void SetCurrentX(int x) {
 	   this.current_x =x;
    }
