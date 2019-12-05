@@ -3,22 +3,22 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MapGUIForm extends JFrame{
-	//ÇÁ·¹ÀÓ ½ÃÀÛÀ§Ä¡ ¼³Á¤, Ã¢ Å©±â ¼³Á¤
+	//í”„ë ˆì„ ì‹œì‘ìœ„ì¹˜ ì„¤ì •, ì°½ í¬ê¸° ì„¤ì •
 	private int framexpos = 100;
 	private int frameypos = 100;
 	private int framewidth = 1024;
 	private int frameheight = 768;
-	//¸ÊÆĞ³Î Å©±â ¼³Á¤
+	//ë§µíŒ¨ë„ í¬ê¸° ì„¤ì •
 	private int mapmargin = 50;
 	private int mapwidth = framewidth/3*2 - mapmargin;
 	private int mapheight = frameheight - mapmargin;
-	//¸Ş´ºÆĞ³Î Å©±â ¼³Á¤
+	//ë©”ë‰´íŒ¨ë„ í¬ê¸° ì„¤ì •
 	private int menuwidth = framewidth/3;
 	private int menuheight = frameheight;
 	
-	//Áöµµ Á¤º¸
+	//ì§€ë„ ì •ë³´
 	private MapData mapdata;
-	//ÆĞ³Î
+	//íŒ¨ë„
 	private MapPanel mappanel;
 	private MenuPanel menupanel;
 	
@@ -26,25 +26,25 @@ public class MapGUIForm extends JFrame{
 	MapGUIForm(int maprow, int mapcol, int startrow, int startcol){
 		setLocation(framexpos, frameypos);
 		setPreferredSize(new Dimension(framewidth, frameheight));
-		setResizable(false); //È­¸é Å©±â Á¶Àı ºÒ°¡
+		setResizable(false); //í™”ë©´ í¬ê¸° ì¡°ì ˆ ë¶ˆê°€
 
 		mapdata = new MapData(maprow, mapcol, startrow, startcol);
 		mappanel = new MapPanel(mapdata, mapwidth, mapheight, maprow, mapcol);
 		menupanel = new MenuPanel(menuwidth, menuheight);
 		
-		//************Frame ¸¶¹«¸®
-		//BoxLayout»ç¿ë. Ã¢ ³Ñ¾î°¡¸é Àß¸². X_AXISÇÏ¸é °¡·Î·Î ÀÏ·Ä ¹èÄ¡
+		//************Frame ë§ˆë¬´ë¦¬
+		//BoxLayoutì‚¬ìš©. ì°½ ë„˜ì–´ê°€ë©´ ì˜ë¦¼. X_AXISí•˜ë©´ ê°€ë¡œë¡œ ì¼ë ¬ ë°°ì¹˜
 		BoxLayout layout = new BoxLayout(getContentPane(), BoxLayout.X_AXIS);
 		setLayout(layout);
-		//Frame¿¡ Panelµé Ãß°¡d
+		//Frameì— Panelë“¤ ì¶”ê°€d
 		add(mappanel);
 		add(menupanel);
-		pack(); //ÀÌ°Å ¾øÀ¸¸é Ã¢Å©±â º¯ÇÔ
+		pack(); //ì´ê±° ì—†ìœ¼ë©´ ì°½í¬ê¸° ë³€í•¨
 		setVisible(true);
 	}
 
     public void setMapPoint(String type, int row, int col) {
-		switch(type) { //EMPTY¸¸ ¾øÀ½
+		switch(type) { //EMPTYë§Œ ì—†ìŒ
 		case "EMPTY":
 			mapdata.setMapPoint(PointType.EMPTY, row, col);
 			break;
@@ -111,11 +111,11 @@ public class MapGUIForm extends JFrame{
 	}
 }
 
-//·Îº¿ÀÌ º¸°íÀÖ´Â ¹æÇâ
+//ë¡œë´‡ì´ ë³´ê³ ìˆëŠ” ë°©í–¥
 enum MoveDirection{
 	UP, LEFT, DOWN, RIGHT
 }
-//¸Ê Æ÷ÀÎÆ®ÀÇ À¯Çü
+//ë§µ í¬ì¸íŠ¸ì˜ ìœ í˜•
 enum PointType{
 	EMPTY, ROBOT, GOAL, SEENHAZARD, SEENCOLORBLOB, NEWHAZARD, NEWCOLORBLOB, ROBOTONGOAL, ROBOTONCLRB, FINISHEDGOAL, ROBOTONFNGOAL
 }
@@ -143,7 +143,7 @@ class MapPanel extends JPanel{
 	private Image imgnewcolorblob;
 	private Image imgrobotongoal;
 	private Image imgfinishedgoal;
-	//´õºí¹öÆÛ¸µ À§ÇÔ
+	//ë”ë¸”ë²„í¼ë§ ìœ„í•¨
 	private Image buffimg; 
 	private Graphics buffimg_g;
 	
@@ -151,18 +151,18 @@ class MapPanel extends JPanel{
 		mapdata = data;
 		maprow = MAPROW;
 		mapcol = MAPCOL;
-		//°¢ ¿ä¼Òº° pixel°ª ÃÊ±âÈ­
+		//ê° ìš”ì†Œë³„ pixelê°’ ì´ˆê¸°í™”
 		mapwidth = width;
 		mapheight = height;
-		//row°¡ ´Ã¾î³ª¸é ypos°ªÀÌ ´Ã¾î³­´Ù
-		//colÀÌ ´Ã¾î³ª¸é xpos°ªÀÌ ´Ã¾î³­´Ù
+		//rowê°€ ëŠ˜ì–´ë‚˜ë©´ yposê°’ì´ ëŠ˜ì–´ë‚œë‹¤
+		//colì´ ëŠ˜ì–´ë‚˜ë©´ xposê°’ì´ ëŠ˜ì–´ë‚œë‹¤
 		cellwidth = mapwidth / mapcol;
 		cellheight = mapheight/ maprow;
 		cellimgwidth = cellwidth - 10;
 		cellimgheight = cellheight -10;
-		//MapPanel Å©±â ÃÊ±âÈ­
+		//MapPanel í¬ê¸° ì´ˆê¸°í™”
 		setPreferredSize(new Dimension(mapwidth, mapheight));
-		//ÀÌ¹ÌÁö ·Îµå
+		//ì´ë¯¸ì§€ ë¡œë“œ
 		imgempty = Toolkit.getDefaultToolkit().getImage(".\\EMPTY.png");
 		imgempty = imgempty.getScaledInstance(cellimgwidth, cellimgheight, Image.SCALE_SMOOTH);
 		imgrobotup = Toolkit.getDefaultToolkit().getImage(".\\ROBOT_UP.png");
@@ -191,19 +191,19 @@ class MapPanel extends JPanel{
 	
 	@Override
 	public void paint(Graphics g) {
-		//´õºí¹öÆÛ¸µ
+		//ë”ë¸”ë²„í¼ë§
 		buffimg = createImage(mapwidth, mapheight);
 		buffimg_g = buffimg.getGraphics();
 		paintComponents(buffimg_g);
-		//buffimg_g¿¡ ¸Ê Ãâ·Â
+		//buffimg_gì— ë§µ ì¶œë ¥
 		DrawMap();
-		//¹öÆÛ¸µ ¸¶Ä£ ÀÌ¹ÌÁö ÇÑ¹ø¿¡ Ãâ·Â
+		//ë²„í¼ë§ ë§ˆì¹œ ì´ë¯¸ì§€ í•œë²ˆì— ì¶œë ¥
 		g.drawImage(buffimg, 0, 0, null);
 	}
 	
 	public void DrawMap() {
-		//row°¡ ´Ã¾î³ª¸é ypos°ªÀÌ ´Ã¾î³­´Ù
-		//colÀÌ ´Ã¾î³ª¸é xpos°ªÀÌ ´Ã¾î³­´Ù
+		//rowê°€ ëŠ˜ì–´ë‚˜ë©´ yposê°’ì´ ëŠ˜ì–´ë‚œë‹¤
+		//colì´ ëŠ˜ì–´ë‚˜ë©´ xposê°’ì´ ëŠ˜ì–´ë‚œë‹¤
 		int mapmargin = 10;
 		int xpos, ypos;
 		for(int i = 0; i < maprow; i++) {
@@ -261,7 +261,7 @@ class MapPanel extends JPanel{
 		case ROBOTONGOAL:
 			buffimg_g.drawImage(imgrobotongoal, xpos, ypos, this);
 			break;
-		case ROBOTONCLRB: //·Îº¿ÀÌ SEENCOLORBLOB À§¿¡ ÀÖ°Ô µÎ°³´Ù ±×·ÁÁØ´Ù
+		case ROBOTONCLRB: //ë¡œë´‡ì´ SEENCOLORBLOB ìœ„ì— ìˆê²Œ ë‘ê°œë‹¤ ê·¸ë ¤ì¤€ë‹¤
 			buffimg_g.drawImage(imgseencolorblob, xpos, ypos, this);
 			switch(mapdata.getCurrentDir()) {
 			case UP:
@@ -284,7 +284,7 @@ class MapPanel extends JPanel{
 		case FINISHEDGOAL:
 			buffimg_g.drawImage(imgfinishedgoal, xpos, ypos, this);
 			break;
-		case ROBOTONFNGOAL: //·Îº¿ÀÌ FNGOAL À§¿¡ ÀÖ°Ô µÎ°³´Ù ±×·ÁÁØ´Ù
+		case ROBOTONFNGOAL: //ë¡œë´‡ì´ FNGOAL ìœ„ì— ìˆê²Œ ë‘ê°œë‹¤ ê·¸ë ¤ì¤€ë‹¤
 			buffimg_g.drawImage(imgfinishedgoal, xpos, ypos, this);
 			switch(mapdata.getCurrentDir()) {
 			case UP:
@@ -323,28 +323,28 @@ class MenuPanel extends JPanel{
 		JLabel label1 = new JLabel("SIM ADD-ON");
 		label1.setHorizontalAlignment(SwingConstants.CENTER);
 		label1.setVerticalAlignment(SwingConstants.CENTER);
-		label1.setFont(new Font("¸¼Àº°íµñ", Font.BOLD, 20));
-		JLabel label2 = new JLabel("·Îº¿ µ¿ÀÛ ÀÚµ¿Á¦¾î ½Ã½ºÅÛ");
+		label1.setFont(new Font("ë§‘ì€ê³ ë”•", Font.BOLD, 20));
+		JLabel label2 = new JLabel("ë¡œë´‡ ë™ì‘ ìë™ì œì–´ ì‹œìŠ¤í…œ");
 		label2.setHorizontalAlignment(SwingConstants.CENTER);
 		label2.setVerticalAlignment(SwingConstants.CENTER);
-		label2.setFont(new Font("¸¼Àº°íµñ", Font.PLAIN, 20));
-		JLabel label3 = new JLabel("ÄÄÇ»ÅÍ°úÇĞºÎ");
+		label2.setFont(new Font("ë§‘ì€ê³ ë”•", Font.PLAIN, 20));
+		JLabel label3 = new JLabel("ì»´í“¨í„°ê³¼í•™ë¶€");
 		label3.setHorizontalAlignment(SwingConstants.CENTER);
 		label3.setVerticalAlignment(SwingConstants.CENTER);
-		label3.setFont(new Font("¸¼Àº°íµñ", Font.BOLD, 20));
-		JLabel label4 = new JLabel("2015920016 µµ¿ìÂù");
+		label3.setFont(new Font("ë§‘ì€ê³ ë”•", Font.BOLD, 20));
+		JLabel label4 = new JLabel("2015920016 ë„ìš°ì°¬");
 		label4.setHorizontalAlignment(SwingConstants.CENTER);
 		label4.setVerticalAlignment(SwingConstants.CENTER);
-		label4.setFont(new Font("¸¼Àº°íµñ", Font.PLAIN, 20));
-		JLabel label5 = new JLabel("2015920057 ÇÏ°æ¹Î");
+		label4.setFont(new Font("ë§‘ì€ê³ ë”•", Font.PLAIN, 20));
+		JLabel label5 = new JLabel("2015920057 í•˜ê²½ë¯¼");
 		label5.setHorizontalAlignment(SwingConstants.CENTER);
 		label5.setVerticalAlignment(SwingConstants.CENTER);
-		label5.setFont(new Font("¸¼Àº°íµñ", Font.PLAIN, 20));
+		label5.setFont(new Font("ë§‘ì€ê³ ë”•", Font.PLAIN, 20));
 		
 		BoxLayout layout = new BoxLayout(this, BoxLayout.Y_AXIS);
 		setLayout(layout);
 		
-		//menupanel¿¡ UI Ãß°¡
+		//menupanelì— UI ì¶”ê°€
 		add(label1);
 		add(label2);
 		add(label3);
@@ -357,23 +357,23 @@ class MenuPanel extends JPanel{
 class MapData{
 	private int maprow;
 	private int mapcol;
-    private PointType[][] mapMatrix; //¸Ê Á¤º¸
-    private PointType[][] snapshot; //¸Ê Á¤º¸ ½º³À¼¦
+    private PointType[][] mapMatrix; //ë§µ ì •ë³´
+    private PointType[][] snapshot; //ë§µ ì •ë³´ ìŠ¤ëƒ…ìƒ·
     private PointType[][] snapshot2;
     
-	private int[] currentPosition = new int[2]; //¿¹ÃøµÈ ÇöÀç ·Îº¿ À§Ä¡
-	private MoveDirection currentDirection; //ÇöÀç ·Îº¿ ¹æÇâ
+	private int[] currentPosition = new int[2]; //ì˜ˆì¸¡ëœ í˜„ì¬ ë¡œë´‡ ìœ„ì¹˜
+	private MoveDirection currentDirection; //í˜„ì¬ ë¡œë´‡ ë°©í–¥
 
 	public MapData(int row, int col, int startrow, int startcol) {
 		maprow = row;
 		mapcol = col;
 		currentPosition[0] = startrow;
 		currentPosition[1] = startcol;
-		currentDirection = MoveDirection.DOWN; //ÃÊ±â ·Îº¿ ¹æÇâ ¾Æ·¡
+		currentDirection = MoveDirection.DOWN; //ì´ˆê¸° ë¡œë´‡ ë°©í–¥ ì•„ë˜
 		System.out.println("currentDirection = " + currentDirection.name());
 		System.out.println("currentPosition = [" + Integer.toString(currentPosition[0]) + ", " + Integer.toString(currentPosition[1]) + "]");
 
-		//¸Ê 2Â÷¿ø Çà·ÄÀÇ ¸ğµç ¿ä¼Ò¸¦ EMPTY·Î ÃÊ±âÈ­
+		//ë§µ 2ì°¨ì› í–‰ë ¬ì˜ ëª¨ë“  ìš”ì†Œë¥¼ EMPTYë¡œ ì´ˆê¸°í™”
 		mapMatrix = new PointType[maprow][mapcol];
 		snapshot = new PointType[maprow][mapcol];
 		snapshot2 = new PointType[maprow][mapcol];
@@ -383,7 +383,7 @@ class MapData{
 				
 			}
 		}
-		//¸Ê Çà·Ä¿¡ ÃÊ±â ·Îº¿ À§Ä¡ ¼³Á¤
+		//ë§µ í–‰ë ¬ì— ì´ˆê¸° ë¡œë´‡ ìœ„ì¹˜ ì„¤ì •
 		mapMatrix[startrow][startcol] = PointType.ROBOT; 
 	}
 	
@@ -433,7 +433,7 @@ class MapData{
     public void doOperation(String oper) {
     	//operation RIGHT, MOVE
     	if (oper.equals("RIGHT")) {
-    	    switch(currentDirection) { //½Ã°è¹æÇâ, ¿À¸¥ÂÊÀ¸·Î µ·´Ù.
+    	    switch(currentDirection) { //ì‹œê³„ë°©í–¥, ì˜¤ë¥¸ìª½ìœ¼ë¡œ ëˆë‹¤.
     	    case UP:
     	    	currentDirection = MoveDirection.RIGHT;
     	    	break;
@@ -452,13 +452,13 @@ class MapData{
     	    }
 			System.out.println("currentDirection = " + currentDirection.name());
     	}
-    	else if(oper.equals("MOVE")) { //¿ÇÀº ¸í·É¸¸ ¿Â´Ù°í °¡Á¤ÇÏ°í ±×³É ±×·ÁÁØ´Ù
+    	else if(oper.equals("MOVE")) { //ì˜³ì€ ëª…ë ¹ë§Œ ì˜¨ë‹¤ê³  ê°€ì •í•˜ê³  ê·¸ëƒ¥ ê·¸ë ¤ì¤€ë‹¤
     		int row, col;
     		row = currentPosition[0];
     		col = currentPosition[1];
-    	    switch(currentDirection) { //ÇöÀç ¹æÇâ¿¡ µû¶ó ¿òÁ÷ÀÌ´Â À§Ä¡ ´Ş¶óÁø´Ù
-    	    //À§·Î°£´Ù´Â°Í = row - 1
-    	    //¿À¸¥ÂÊÀ¸·Î °£´Ù´Â °Í = col + 1
+    	    switch(currentDirection) { //í˜„ì¬ ë°©í–¥ì— ë”°ë¼ ì›€ì§ì´ëŠ” ìœ„ì¹˜ ë‹¬ë¼ì§„ë‹¤
+    	    //ìœ„ë¡œê°„ë‹¤ëŠ”ê²ƒ = row - 1
+    	    //ì˜¤ë¥¸ìª½ìœ¼ë¡œ ê°„ë‹¤ëŠ” ê²ƒ = col + 1
     	    case UP:
     	    	goStep(row, col, row - 1, col);
     	    	break;
@@ -484,21 +484,21 @@ class MapData{
     }
     
     public void goStep(int row, int col, int next_row, int next_col) {
-    	//¸ÕÀú mapdataÀÇ ÇöÀç ·Îº¿ À§Ä¡°ª º¯°æÇØÁØ´Ù.
+    	//ë¨¼ì € mapdataì˜ í˜„ì¬ ë¡œë´‡ ìœ„ì¹˜ê°’ ë³€ê²½í•´ì¤€ë‹¤.
 		currentPosition[0] = next_row;
 		currentPosition[1] = next_col;
-		//mapdata.mapMatrix Çà·Ä°ª ¼öÁ¤ÇØÁØ´Ù
+		//mapdata.mapMatrix í–‰ë ¬ê°’ ìˆ˜ì •í•´ì¤€ë‹¤
     	switch(mapMatrix[row][col]) {
     	case ROBOT:
     		mapMatrix[row][col] = PointType.EMPTY;
     		break;
-    	case ROBOTONGOAL: //GOALÀ» ¹â°í Áö³ª°¡¸é FINISHEDGOAL·Î ¸¸µé¾î¾ßÇÔ
+    	case ROBOTONGOAL: //GOALì„ ë°Ÿê³  ì§€ë‚˜ê°€ë©´ FINISHEDGOALë¡œ ë§Œë“¤ì–´ì•¼í•¨
     		mapMatrix[row][col] = PointType.FINISHEDGOAL;
     		break;
-    	case ROBOTONCLRB: //±×´ë·Î CLRB
+    	case ROBOTONCLRB: //ê·¸ëŒ€ë¡œ CLRB
     		mapMatrix[row][col] = PointType.SEENCOLORBLOB;
     		break;
-    	case ROBOTONFNGOAL: // ±×´ë·Î FNGOAL
+    	case ROBOTONFNGOAL: // ê·¸ëŒ€ë¡œ FNGOAL
     		mapMatrix[row][col] = PointType.FINISHEDGOAL;
     		break;
     	default: //ERROR
@@ -544,7 +544,7 @@ class MapData{
     }
 
     public PointType getSnapshotPoint(int row, int col) {
-    	return snapshot[row][col]; //¿©±â¼­´Â PointTypeÀ¸·Î ¸®ÅÏÇÔ. »óÀ§ ¸Ş¼Òµå¿¡¼­ StringÀ¸·Î º¯È¯
+    	return snapshot[row][col]; //ì—¬ê¸°ì„œëŠ” PointTypeìœ¼ë¡œ ë¦¬í„´í•¨. ìƒìœ„ ë©”ì†Œë“œì—ì„œ Stringìœ¼ë¡œ ë³€í™˜
 	}
     
     public PointType getSnapshot2Point(int row, int col) {
@@ -552,7 +552,7 @@ class MapData{
     }
     
     public PointType getMapPoint(int row, int col) {
-    	return mapMatrix[row][col]; //¿©±â¼­´Â PointTypeÀ¸·Î ¸®ÅÏÇÔ. »óÀ§ ¸Ş¼Òµå¿¡¼­ StringÀ¸·Î º¯È¯
+    	return mapMatrix[row][col]; //ì—¬ê¸°ì„œëŠ” PointTypeìœ¼ë¡œ ë¦¬í„´í•¨. ìƒìœ„ ë©”ì†Œë“œì—ì„œ Stringìœ¼ë¡œ ë³€í™˜
 	}
     
     public MoveDirection getCurrentDir() {
