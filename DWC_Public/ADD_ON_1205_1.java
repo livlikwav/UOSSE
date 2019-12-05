@@ -40,7 +40,14 @@ class RobotOperationManager { // 시퀀스 다이어그램에서 볼 수 있듯이 이 클래스가 
    int[] dx = {0, -1, 0, 1};
    int[] dy = {-1, 0, 1, 0};
    
+   int[][] map_temp = mdm.GetMap();
+   
+   String[][][] answer_pn = new String[mdm.GetMapSearchX().length][mdm.GetMapRow()][mdm.GetMapCol()];
+   
+   
+   
    String[] operation_list; // 명령어 하나씩 받아온다.
+   
    RobotOperationManager() throws IOException {
       final int SOUTH = 3; // 회전 할 때마다 1씩 준다고 생각 , 여기서 선언해준건 명시해주려고
       
@@ -72,7 +79,7 @@ class RobotOperationManager { // 시퀀스 다이어그램에서 볼 수 있듯이 이 클래스가 
             }
             boolean flag = mdm.CheckRePathFlag(); //플래그 체크
             if (flag || check_step) { // 플래그가 1이거나 한 타겟지점 도착 시
-            	
+            	map_temp = mdm.GetMap();
             
             	initalizeVistPath();
 
@@ -85,7 +92,7 @@ class RobotOperationManager { // 시퀀스 다이어그램에서 볼 수 있듯이 이 클래스가 
             
             int tmpx = mdm.GetMapSearchX()[mdm.GetMapStep()]; // n번째 타겟지점
             int tmpy = mdm.GetMapSearchY()[mdm.GetMapStep()];
-            operation_list = mdm.GetMapPath()[mdm.GetMapStep()][tmpx][tmpy].split("->"); //n번째 타겟지점에 저장된 경로를 "->"을 기준으로 split
+            operation_list = answer_pn[mdm.GetMapStep()][tmpx][tmpy].split("->"); //n번째 타겟지점에 저장된 경로를 "->"을 기준으로 split
             System.out.println(next_opr + " , " + operation_list[next_opr]);
             
             
@@ -147,16 +154,12 @@ class RobotOperationManager { // 시퀀스 다이어그램에서 볼 수 있듯이 이 클래스가 
    
    
    void MakePath() {
-   	PathManager pm = new PathManager(mdm.GetMapRow(), mdm.GetMapCol(), mdm.GetMap(), mdm.GetMapVisit(), mdm.GetMapPath(), mdm.GetMapStep());
+   	PathManager pm = new PathManager(mdm.GetMapRow(), mdm.GetMapCol(), map_temp, mdm.GetMapVisit(), answer_pn, mdm.GetMapStep());
        //새로운 pathmanager 객체 생성, 바뀌는 건 visit, path, step뿐 -> 모두 한 타겟지점 도착 시 다음걸로 바뀜
        pm.CalculateOptimalPath(mdm.GetMapCurrentX(), mdm.GetMapCurrentY(), mdm.GetMapCurrentDirection()); 
        // 주어진 Pathmanager 정보와 또 주어지는 현재 위치 및, 방향으로 경로 계산
-       PathNode answer_pn = pm.GetData(); //계산된 경로 가져옴
-       for (int i=0; i<mdm.GetMapRow(); i++) {
-    	   for (int j=0; j<mdm.GetMapCol(); j++) {
-    		   mdm.SetMapPath(mdm.GetMapStep(), i, j, answer_pn.path[mdm.GetMapStep()][i][j]);//map에 저장
-    	   }
-       }
+       answer_pn = pm.GetPath(); //계산된 경로 가져옴
+       
        
    }
    
@@ -166,7 +169,7 @@ class RobotOperationManager { // 시퀀스 다이어그램에서 볼 수 있듯이 이 클래스가 
 	   for (int i=0; i<mdm.GetMapRow(); i++) {
            for (int j=0; j<mdm.GetMapCol(); j++) {
                   
-        	   mdm.SetMapPath(mdm.GetMapStep(), i, j, "");
+        	   answer_pn[mdm.GetMapStep()][i][j] = "";
         	   mdm.SetMapVisit(mdm.GetMapStep(), i, j, false);
            }
         }
@@ -215,206 +218,230 @@ class RobotOperationManager { // 시퀀스 다이어그램에서 볼 수 있듯이 이 클래스가 
 }
 
 class MapDataManager { //맵에게 전달한 변수들 저장, 대부분 이름으로 역할 추정 가능
-   int[][] map;
-   
-   boolean[][][] visit; //중요 -> 3차원배열로 처음은 step별로, 즉 탐색지점 개수만큼 생성, 두 세번째는 좌표
-   int row;
-   int col;
-   int start_x;
-   int start_y;
-   int[] search_x;
-   int[] search_y;
-   int[] hazard_x;
-   int[] hazard_y;
-   
-   String[][][] path; //중요 -> 3차원배열로 처음은 step별로, 즉 탐색지점 개수만큼 생성, 두 세번째는 좌표
-   int search_cnt;
-   int hazard_cnt;
-   
-   Map mp = new Map(); //map 객체 생성 후 전달.
-   HazardSensorManager hsm = new HazardSensorManager();
-   ColorBlobSensorManager cbsm = new ColorBlobSensorManager();
-   PositionSensorManager psm = new PositionSensorManager();
-   
-   
-   
-   static MapGUIForm gui;
-   
-   MapDataManager() throws IOException {
-      // TODO Auto-generated method stub
-      InputMapDataForm IMDF = new InputMapDataForm();
-      
-      row = IMDF.row;
-      col = IMDF.col;
-      start_x = IMDF.start_x;
-      start_y = IMDF.start_y;
-      
-      path = IMDF.path;
-      search_cnt = IMDF.search_cnt;
-      hazard_cnt = IMDF.hazard_cnt;
-      map = IMDF.map;
-      visit = IMDF.visit;
-      search_x = IMDF.search_x;
-      search_y = IMDF.search_y;
-      hazard_x = IMDF.hazard_x;
-      hazard_y = IMDF.hazard_y;
-      
-      
-      mp.Save(row, col, start_x, start_y, map, visit, path, search_cnt, hazard_cnt, start_x, start_y, 3, search_x, search_y, hazard_x, hazard_y);
-      
-      ///////////////////////////////////////MAP GUI FORM/////////////////////////////////////////////
-      gui = new MapGUIForm(row, col, start_x, start_y);
-      for (int i=0; i<search_cnt; i++) {
-         gui.setMapPoint("GOAL", search_x[i], search_y[i]);
-      }
-      for (int i=0; i<hazard_cnt; i++) {
-         gui.setMapPoint("SEENHAZARD", hazard_x[i], hazard_y[i]);
-      }
-      
-      
-      ///////////////////////////////////////MAP GUI FORM/////////////////////////////////////////////
-      
-   }
-   
-   static void GUIOperationPrint(String operation) {
-      gui.setOperation(operation);
-      try {
-          
-          Thread.sleep(500);
-          
-          } catch (InterruptedException e) {
-          
-          e.printStackTrace();
-          
-          }
-   }
-   static void GUIMapSetPrint(String type, int x, int y) {
-	   gui.setMapPoint(type, x, y);
-	   gui.updateMap();
-	   try {
-           
-           Thread.sleep(1000);
-           
-           } catch (InterruptedException e) {
-           
-           e.printStackTrace();
-           
-           }
-   }
-   
-   void print() {
-      for (int i=0; i<row; i++) {
-         for (int j=0; j<col; j++) {
-            System.out.print(map[i][j]);
-         }
-         System.out.println();
-      }
-   }
-   
-   
-   boolean CheckRePathFlag() { //플래그 체크 함수
-      boolean flag = mp.GetRePathFlag();
-      return flag;
-   }
-   
-   int[][] GetMap() {
-      return mp.GetMap();
-   }
-   int GetMapmap(int x, int y) {
-	   return mp.Getmap(x, y);
-   }
-   int GetMapCurrentDirection() {
-	   return mp.GetcurrentDir();
-   }
-   
-   int GetMapStartX() {
-	   return mp.GetStartX();
-   }
-   int GetMapStartY() {
-	   return mp.GetStartY();
-   }
-   int GetMapCurrentX() {
-	   return mp.GetCurrentX();
-   }
-   int GetMapCurrentY() {
-	   return mp.GetCurrentY();
-   }
-   int GetMapStep() {
-	   return mp.GetStep();
-   }
-   String[][][] GetMapPath() {
-	   return mp.GetPath();
-   }
-   boolean[][][] GetMapVisit() {
-	   return mp.GetVisit();
-   }
-   int[] GetMapSearchX() {
-	   return mp.GetSearchX();
-   }
-   int[] GetMapSearchY() {
-	   return mp.GetSearchY();
-   }
-   int GetMapRow() {
-	   return mp.GetMapRow();
-   }
-   int GetMapCol() {
-	   return mp.GetMapCol();
-   }
-   int GetMapSearchCount() {
-	   return mp.GetSearchCount();
-   }
-   boolean GetColorBolobSensor(SIM sim, int x, int y, int dir) {
-	   if(cbsm.GetSensorValue(sim, x, y, dir, mp.Getmap(x, y))) {
-		   mp.Setmap(x, y, 4);
-		   GUIMapSetPrint("SEENCOLORBLOB", x, y);
-		   return true;
-	   }
-	   return false;
-   }
-   boolean GetHazardSensor(SIM sim,int x, int y, int dir) {
-	   if(hsm.GetSensorValue(sim, x, y, dir, mp.Getmap(x, y))) {
-		   mp.Setmap(x, y, 2);
-		   GUIMapSetPrint("SEENHAZARD", x, y);
-		   return true;
-	   }
-	   return false;
-   }
-   Node GetCurrentPositionSensor(SIM sim, int x, int y, int dir) {
-	   return psm.GetSensorValue(sim, x, y, dir, mp.GetMapRow(), mp.GetMapCol());
-   }
-   void SetMapCurrentDir(int dir) {
-	   mp.SetCurrentDirection(dir);
-   }
-   void SetMapStartX(int x) {
+	   int row;
+	   int col;
+	   int start_x;
+	   int start_y;
+	   int search_cnt;
+	   int hazard_cnt;
+
+	   int[][] map;
+	   boolean[][][] visit; //중요 -> 3차원배열로 처음은 step별로, 즉 탐색지점 개수만큼 생성, 두 세번째는 좌표
 	   
-   }
-   void SetMapStartY(int y) {
 	   
-   }
-   void SetMapFlag(boolean flag) {
-	   mp.SetFlag(flag);
-   }
-   void SetMapStep(int step) {
-	   mp.SetStep(step);
-   }
-   void SetMapPath(int step, int x, int y, String s) {
-	   mp.SetPath(step, x, y, s);
-   }
-   void SetMapVisit(int step, int x, int y, boolean b) {
-	   mp.SetVisit(step, x, y, b);
-   }
-   void SetMapCurrentX(int x) {
-	   mp.SetCurrentX(x);
-   }
-   void SetMapCurrentY(int y) {
-	   mp.SetCurrentY(y);
-   }
-   void SetMapmap(int x, int y, int inf) {
-	   mp.Setmap(x,y, inf);
-   }
-   
-   
-}
+	   int[] search_x;
+	   int[] search_y;
+	   int[] hazard_x;
+	   int[] hazard_y;
+
+	   
+	   Map mp = new Map(); //map 객체 생성 후 전달.
+	   HazardSensorManager hsm = new HazardSensorManager();
+	   ColorBlobSensorManager cbsm = new ColorBlobSensorManager();
+	   PositionSensorManager psm = new PositionSensorManager();
+	   
+	   
+	   
+	   static MapGUIForm gui;
+	   
+	   MapDataManager() throws IOException {
+	      // TODO Auto-generated method stub
+	      InputMapDataForm IMDF = new InputMapDataForm();
+	      
+	      row = IMDF.row;
+	      col = IMDF.col;
+	      start_x = IMDF.start_x;
+	      start_y = IMDF.start_y;
+	      search_cnt = IMDF.search_cnt;
+	      hazard_cnt = IMDF.hazard_cnt;
+	      
+	      search_x = IMDF.search_x;
+	      search_y = IMDF.search_y;
+	      hazard_x = IMDF.hazard_x;
+	      hazard_y = IMDF.hazard_y;
+	      
+	      InitMapData();
+	      
+	      mp.Save(row, col, start_x, start_y, map, visit, search_cnt, hazard_cnt, start_x, start_y, 3, search_x, search_y, hazard_x, hazard_y);
+	      
+	      ///////////////////////////////////////MAP GUI FORM/////////////////////////////////////////////
+	      gui = new MapGUIForm(row, col, start_x, start_y);
+	      for (int i=0; i<search_cnt; i++) {
+	         gui.setMapPoint("GOAL", search_x[i], search_y[i]);
+	      }
+	      for (int i=0; i<hazard_cnt; i++) {
+	         gui.setMapPoint("SEENHAZARD", hazard_x[i], hazard_y[i]);
+	      }
+	      
+	      
+	      ///////////////////////////////////////MAP GUI FORM/////////////////////////////////////////////
+	      
+	   }
+	   void InitMapData() {
+		      map = new int[row+1][col+1];
+		      visit = new boolean[search_cnt][row+1][col+1];
+		      
+		      //map 초기화
+		      for (int i=0; i<row; i++) {
+		         for (int j=0; j<col; j++) {
+		            map[i][j] = 0;    //일반 지역 = 0
+		         }
+		      } 
+		      // visit, path 초기화
+		      for (int k=0; k<search_cnt; k++) {
+		         for (int i=0; i<row; i++) {
+		            for (int j=0; j<col; j++) {
+		                              
+		               visit[k][i][j] = false;
+		               
+		            }
+		         }
+		      }
+		      // map 행렬에 탐색 지역 표시
+		      for (int i=0; i<this.search_cnt; i++) {
+		         this.map[search_x[i]][search_y[i]] = 1; // 탐색 지역 = 1
+		      }
+		      // map 행렬에 위험 지역 표시
+		      for (int i=0; i<this.hazard_cnt; i++) {
+		         this.map[hazard_x[i]][hazard_y[i]] = 2;  // 위험 지역 = 2
+		      }
+	   }
+	   
+	   static void GUIOperationPrint(String operation) {
+	      gui.setOperation(operation);
+	      try {
+	          
+	          Thread.sleep(500);
+	          
+	          } catch (InterruptedException e) {
+	          
+	          e.printStackTrace();
+	          
+	          }
+	   }
+	   static void GUIMapSetPrint(String type, int x, int y) {
+		   gui.setMapPoint(type, x, y);
+		   gui.updateMap();
+		   try {
+	           
+	           Thread.sleep(1000);
+	           
+	           } catch (InterruptedException e) {
+	           
+	           e.printStackTrace();
+	           
+	           }
+	   }
+	   
+	   void print() {
+	      for (int i=0; i<row; i++) {
+	         for (int j=0; j<col; j++) {
+	            System.out.print(map[i][j]);
+	         }
+	         System.out.println();
+	      }
+	   }
+	   
+	   
+	   boolean CheckRePathFlag() { //플래그 체크 함수
+	      boolean flag = mp.GetRePathFlag();
+	      return flag;
+	   }
+	   
+	   int[][] GetMap() {
+	      return mp.GetMap();
+	   }
+	   int GetMapmap(int x, int y) {
+		   return mp.Getmap(x, y);
+	   }
+	   int GetMapCurrentDirection() {
+		   return mp.GetcurrentDir();
+	   }
+	   
+	   int GetMapStartX() {
+		   return mp.GetStartX();
+	   }
+	   int GetMapStartY() {
+		   return mp.GetStartY();
+	   }
+	   int GetMapCurrentX() {
+		   return mp.GetCurrentX();
+	   }
+	   int GetMapCurrentY() {
+		   return mp.GetCurrentY();
+	   }
+	   int GetMapStep() {
+		   return mp.GetStep();
+	   }
+	   
+	   boolean[][][] GetMapVisit() {
+		   return mp.GetVisit();
+	   }
+	   int[] GetMapSearchX() {
+		   return mp.GetSearchX();
+	   }
+	   int[] GetMapSearchY() {
+		   return mp.GetSearchY();
+	   }
+	   int GetMapRow() {
+		   return mp.GetMapRow();
+	   }
+	   int GetMapCol() {
+		   return mp.GetMapCol();
+	   }
+	   int GetMapSearchCount() {
+		   return mp.GetSearchCount();
+	   }
+	   boolean GetColorBolobSensor(SIM sim, int x, int y, int dir) {
+		   if(cbsm.GetSensorValue(sim, x, y, dir, mp.Getmap(x, y))) {
+			   mp.Setmap(x, y, 4);
+			   GUIMapSetPrint("SEENCOLORBLOB", x, y);
+			   return true;
+		   }
+		   return false;
+	   }
+	   boolean GetHazardSensor(SIM sim,int x, int y, int dir) {
+		   if(hsm.GetSensorValue(sim, x, y, dir, mp.Getmap(x, y))) {
+			   mp.Setmap(x, y, 2);
+			   GUIMapSetPrint("SEENHAZARD", x, y);
+			   return true;
+		   }
+		   return false;
+	   }
+	   Node GetCurrentPositionSensor(SIM sim, int x, int y, int dir) {
+		   return psm.GetSensorValue(sim, x, y, dir, mp.GetMapRow(), mp.GetMapCol());
+	   }
+	   void SetMapCurrentDir(int dir) {
+		   mp.SetCurrentDirection(dir);
+	   }
+	   void SetMapStartX(int x) {
+		   
+	   }
+	   void SetMapStartY(int y) {
+		   
+	   }
+	   void SetMapFlag(boolean flag) {
+		   mp.SetFlag(flag);
+	   }
+	   void SetMapStep(int step) {
+		   mp.SetStep(step);
+	   }
+	   
+	   void SetMapVisit(int step, int x, int y, boolean b) {
+		   mp.SetVisit(step, x, y, b);
+	   }
+	   void SetMapCurrentX(int x) {
+		   mp.SetCurrentX(x);
+	   }
+	   void SetMapCurrentY(int y) {
+		   mp.SetCurrentY(y);
+	   }
+	   void SetMapmap(int x, int y, int inf) {
+		   mp.Setmap(x,y, inf);
+	   }
+	   
+	   
+	}
    
 class PathManager {
       final int SOUTH = 3;
@@ -446,7 +473,7 @@ class PathManager {
 
       void CalculateOptimalPath(int x, int y, int my_dir) { //경로 계산 함수
          
-         pn = new PathNode(row, col, map, visit, path);    //초기화
+         pn = new PathNode(path);    //초기화
          Queue<Node> q = new LinkedList<Node>(); // 큐 생성
          int my_direc = my_dir; //현재 방향 저장
          
@@ -473,12 +500,12 @@ class PathManager {
                else if(i==0) {
                   tmp_dir = WEST; //WEST
                }
-               if (nx < 0 || ny < 0 || nx >= pn.row || ny >= pn.col) {
+               if (nx < 0 || ny < 0 || nx >= row || ny >= col) {
                   continue;
                }
                // 가고 싶은 좌표가 맵 크기를 넘어 버리면 건너뛰기
                
-               if (pn.visit[step][nx][ny] || pn.map[nx][ny] == 2) {
+               if (visit[step][nx][ny] || map[nx][ny] == 2) {
                   continue;
                }
                 //이미 방문했던 점이거나 위험지역이면 건너뛰기
@@ -501,28 +528,25 @@ class PathManager {
             
                 //pn.path[step][nx][ny] = pn.path[step][n.x][n.y] + "(" + nx + " , " + ny + ")";
                
-               pn.visit[step][nx][ny] = true;
+               visit[step][nx][ny] = true;
                 
             }
          }
       }
-      PathNode GetData(){
-      return pn;
+      String[][][] GetPath(){
+      return pn.getPath();
       }
 
 }
 class PathNode {
-   int row;
-   int col;
-   int[][] map;
-   boolean[][][] visit;
+   
    String[][][] path;
-   PathNode (int row, int col, int[][] map, boolean visit[][][], String[][][] path){
-      this.row = row;
-      this.col = col;
-      this.map = map;
-      this.visit = visit;
+   PathNode (String[][][] path){
+     
       this.path = path;
+   }
+   String[][][] getPath() {
+	   return this.path;
    }
 }
 
@@ -695,9 +719,6 @@ class InputMapDataForm //입력 폼 클래스
    StringTokenizer str;
    int start_x;
    int start_y;
-   int map[][];
-   boolean visit[][][];
-   String path[][][];
    
    int search_cnt;
    int hazard_cnt;
@@ -748,28 +769,7 @@ class InputMapDataForm //입력 폼 클래스
    
       str = new StringTokenizer(bfr.readLine());
       this.hazard_cnt = Integer.valueOf(str.nextToken()); // 위험 위치 벡터 수 입력
-   
-      this.map = new int[row+1][col+1];
-      this.visit = new boolean[search_cnt][row+1][col+1];
-      this.path = new String[search_cnt][row+1][col+1];
-   
-      for (int i=0; i<row; i++) {
-         for (int j=0; j<col; j++) {
-            map[i][j] = 0;                   //일반 지역 = 0
-         
-         
-         }
-      } //map 초기화
       
-      for (int k=0; k<search_cnt; k++) {
-         for (int i=0; i<this.row; i++) {
-            for (int j=0; j<this.col; j++) {
-                              
-               this.visit[k][i][j] = false;
-               this.path[k][i][j] = "";
-            }
-         }
-      }
       // visit, path 초기화
       search_x = new int[search_cnt];
       search_y = new int[search_cnt];
@@ -780,7 +780,7 @@ class InputMapDataForm //입력 폼 클래스
          search_x[i] = tempx;
          int tempy = Integer.valueOf(str.nextToken());
          search_y[i] = tempy;
-         this.map[tempx][tempy] = 1; // 탐색 지역 = 1
+         //this.map[tempx][tempy] = 1; // 탐색 지역 = 1
          
       }
       //map에 탐색 지역 표시
@@ -793,7 +793,7 @@ class InputMapDataForm //입력 폼 클래스
          hazard_x[i] = tempx;
          int tempy = Integer.valueOf(str.nextToken());
          hazard_y[i] = tempy;
-         this.map[tempx][tempy] = 2;  // 위험 지역 = 2
+         //this.map[tempx][tempy] = 2;  // 위험 지역 = 2
       }
       //map에 위험 지역 표시
    
@@ -809,7 +809,7 @@ class Map{
    private int start_x;
    private int start_y;
    private boolean[][][] visit;
-   private String[][][] path;
+   
    private int[] search_x;
    private int[] search_y;
    private int[] hazard_x;
@@ -824,8 +824,8 @@ class Map{
    
    
    
-   void Save(int row, int col, int start_x, int start_y, int[][] map, boolean[][][] visit, String[][][]path, int search_cnt, int hazard_cnt, int current_x, int current_y, int current_direction, int[] search_x, int[] search_y, int[] hazard_x, int[] hazard_y) {
-      SetMap(row, col, start_x, start_y, map, visit, path, search_cnt, hazard_cnt, current_x, current_y, current_direction, search_x, search_y, hazard_x, hazard_y);
+   void Save(int row, int col, int start_x, int start_y, int[][] map, boolean[][][] visit, int search_cnt, int hazard_cnt, int current_x, int current_y, int current_direction, int[] search_x, int[] search_y, int[] hazard_x, int[] hazard_y) {
+      SetMap(row, col, start_x, start_y, map, visit, search_cnt, hazard_cnt, current_x, current_y, current_direction, search_x, search_y, hazard_x, hazard_y);
    }
    public int Getmap(int x, int y) {
 	  return this.map[x][y];
@@ -834,13 +834,13 @@ class Map{
 public void Setmap(int x, int y, int inf) {
 	   this.map[x][y] = inf;
    }
-void SetMap(int row, int col, int start_x, int start_y, int[][] map, boolean[][][] visit, String[][][]path, int search_cnt, int hazard_cnt, int current_x, int current_y, int current_direction, int[] search_x, int[] search_y, int[] hazard_x, int[] hazard_y) {
+void SetMap(int row, int col, int start_x, int start_y, int[][] map, boolean[][][] visit,  int search_cnt, int hazard_cnt, int current_x, int current_y, int current_direction, int[] search_x, int[] search_y, int[] hazard_x, int[] hazard_y) {
       this.mapsize_row = row;
       this.mapsize_col = col;
       this.start_x = start_x;
       this.start_y = start_y;
       this.visit = visit;
-      this.path = path;
+      
       this.search_cnt = search_cnt;
       this.hazard_cnt = hazard_cnt;
       this.current_direction = current_direction;
@@ -858,9 +858,7 @@ void SetMap(int row, int col, int start_x, int start_y, int[][] map, boolean[][]
    void SetCurrentY(int y) {
 	   this.current_y = y;
    }
-   void SetPath(int step, int x, int y, String s) {
-	   this.path[step][x][y] = s;
-   }
+   
    void SetVisit(int step, int x, int y, boolean b) {
 	   this.visit[step][x][y] = b;
    }
@@ -894,9 +892,7 @@ void SetMap(int row, int col, int start_x, int start_y, int[][] map, boolean[][]
    int GetStep() {
 	   return this.step;
    }
-   String[][][] GetPath() {
-	   return this.path;
-   }
+   
    int GetcurrentDir() {
 	   return this.current_direction;
    }
