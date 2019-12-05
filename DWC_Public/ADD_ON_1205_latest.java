@@ -511,11 +511,11 @@ class PathManager {
                 //이미 방문했던 점이거나 위험지역이면 건너뛰기
                
                pn.SetPathPoint(step, nx, ny, pn.GetPathPoint(step, n.x, n.y)); 
-               pn.path[step][nx][ny] += pn.path[step][n.x][n.y];
+               
                //가고 싶은 좌표에 현재까지 오는데 걸린 경로 저장 후
                
                while(my_direc != tmp_dir) {
-                  pn.path[step][nx][ny] += "RIGHT->";
+                  pn.SetPathPoint(step, nx, ny, "RIGHT->");
                   if(my_direc == SOUTH) my_direc = -1;
                   my_direc = direction[my_direc+1];
                } // 경로에  맞게 회전, 모두 저장
